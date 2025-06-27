@@ -1,38 +1,514 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif; /* Changed to Montserrat font */
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
 .App {
+  display: flex;
+  flex-direction: column; /* Stack header, content, footer */
+  min-height: 100vh;
+  color: #ffffff;
   text-align: center;
+  position: relative; /* For transitions */
+  overflow: hidden; /* Ensure sliding content is clipped */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Global Header */
+.global-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent dark background */
+  padding: 15px 0;
+  z-index: 1000; /* Ensure it's on top */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center; /* Center nav by default */
+  align-items: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.global-header nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.global-header nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  padding: 5px 10px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.global-header nav a:hover {
+  color: #007bff; /* Highlight color on hover */
+  transform: translateY(-2px); /* Subtle lift effect */
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+  display: none; /* Hidden by default on larger screens */
+  flex-direction: column;
+  cursor: pointer;
+  padding: 10px;
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1001; /* Above nav */
+}
+
+.hamburger-menu .bar {
+  width: 25px;
+  height: 3px;
+  background-color: #ffffff;
+  margin: 4px 0;
+  transition: 0.4s;
+}
+
+/* Mobile Navigation Overlay */
+@media (max-width: 768px) {
+  .global-header {
+    justify-content: flex-start; /* Align items to start on mobile */
+  }
+
+  .hamburger-menu {
+    display: flex; /* Show hamburger on mobile */
+  }
+
+  .global-header nav {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Start off-screen */
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95); /* Darker overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000; /* Below hamburger */
+  }
+
+  .global-header nav.nav-open {
+    left: 0; /* Slide in */
+  }
+
+  .global-header nav ul {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .global-header nav a {
+    font-size: 1.5rem;
+    padding: 10px 20px;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Global Footer */
+.global-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent dark background */
+  padding: 10px 0;
+  z-index: 1000; /* Ensure it's on top */
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+/* Page Transition styles (morphing effect) */
+.fade-enter {
+  opacity: 0;
+  transform: scale(1.1) translateY(0); /* Start slightly zoomed in and at current Y */
+  filter: blur(5px);
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transform: scale(1) translateY(0); /* End at normal size and position */
+  filter: blur(0px);
+  transition: opacity 600ms ease-out, transform 600ms ease-out, filter 600ms ease-out;
+}
+
+.fade-exit {
+  opacity: 1;
+  transform: scale(1) translateY(0); /* Start at normal size and position */
+  filter: blur(0px);
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transform: scale(0.9) translateY(0); /* End slightly zoomed out and at current Y */
+  filter: blur(5px);
+  transition: opacity 600ms ease-out, transform 600ms ease-out, filter 600ms ease-out;
+}
+
+.landing-page-container,
+.about-me-page,
+.cv-page {
+  position: absolute; /* Position for transitions */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover; /* Ensure image covers the container */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  min-height: 100vh; /* Ensure it takes full height */
+  width: 100vw; /* Ensure it takes full width */
+  padding-top: 70px; /* Space for fixed header */
+  padding-bottom: 50px; /* Space for fixed footer */
+  box-sizing: border-box; /* Include padding in height calculation */
+}
+
+/* Landing Page Specific Styles */
+.landing-page-container {
+  background-image: url('./assets/landingpage.jpg'); /* Image background */
+}
+
+/* Overlay for animated gradient */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-45deg, rgba(44, 62, 80, 0.6), rgba(52, 73, 94, 0.6), rgba(26, 42, 58, 0.6), rgba(10, 26, 42, 0.6)); /* Animated gradient with transparency */
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  z-index: 1; /* Place it above the background image */
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.content-wrapper {
+  position: absolute; /* Changed to absolute positioning */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centering trick */
+  z-index: 2; /* Place content above the overlay */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background for text box */
+  padding: 40px; /* Add padding to the content box */
+  border-radius: 10px; /* Rounded corners for the box */
+  max-width: 800px; /* Increased max-width for better presentation */
+  width: 100%; /* Allow width to be responsive */
 }
 
-.App-link {
-  color: #61dafb;
+.title-block {
+  margin-bottom: 40px;
+  overflow: hidden; /* Hide text before animation */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
+.horizontal-line {
+  width: 80%;
+  max-width: 400px;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.3); /* Softer line */
+  margin: 20px auto;
+}
+
+h1 {
+  font-size: 3.5rem; /* Larger font size */
+  font-weight: 700; /* Bolder font */
+  text-transform: uppercase;
+  letter-spacing: 8px; /* More letter spacing */
+  margin: 10px 0;
+  opacity: 0; /* Start hidden for animation */
+  transform: translateY(20px); /* Start slightly below */
+}
+
+.subtitle {
+  font-size: 1.1rem; /* Slightly larger subtitle */
+  text-transform: uppercase;
+  letter-spacing: 3px; /* More letter spacing */
+  margin: 10px 0;
+  line-height: 1.5;
+  opacity: 0; /* Start hidden for animation */
+  transform: translateY(20px); /* Start slightly below */
+}
+
+/* Text Reveal Animation */
+@keyframes textReveal {
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.text-reveal {
+  animation: textReveal 0.8s ease-out forwards;
+}
+
+.text-reveal:nth-child(2) { /* For subtitle */
+  animation-delay: 0.3s; /* Stagger animation */
+}
+
+.button-row {
+  display: flex;
+  gap: 30px; /* More space between buttons */
+  margin-top: 50px; /* Space above buttons */
+  margin-bottom: 50px;
+}
+
+.nav-button {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.5); /* Softer border */
+  color: #ffffff;
+  padding: 15px 35px; /* Larger padding */
+  font-size: 1.1rem; /* Larger font */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth transition for all properties */
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); /* Subtle glow */
+}
+
+.copyright {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+/* CV Page Styles */
+.cv-page {
+  min-height: 100vh;
+  color: #e9ecef;
+  overflow-y: auto; /* Enable scrolling for content */
+  /* Removed padding-top here, now handled by global page styles */
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack sections vertically */
+  align-items: center; /* Center sections horizontally */
+}
+
+.section {
+  padding: 2rem 2rem; /* Add padding to sections */
+  margin: 20px auto; /* Center sections and add margin */
+  position: relative; /* For text readability over background */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for sections */
+  max-width: 80%; /* Limit width */
+  border-radius: 10px; /* Rounded corners */
+  text-align: left; /* Align text to the left */
+}
+
+.section h2 {
+  border-bottom: 1px solid #495057;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Add shadow for readability */
+}
+
+.job, .education-item {
+  margin-bottom: 1.5rem;
+}
+
+.job h3, .education-item h4 {
+  margin-bottom: 0.25rem;
+}
+
+.text-muted {
+  color: #868e96 !important;
+}
+
+.skills-list {
+  list-style: none;
+  padding: 0;
+}
+
+.skills-list li {
+  margin-bottom: 0.5rem;
+}
+
+/* About Me Page Styles */
+.about-me-page {
+  color: #ffffff;
+  text-align: center;
+  padding: 20px;
+}
+
+.about-me-content-wrapper {
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  padding: 40px; /* Add padding to the content box */
+  border-radius: 10px; /* Rounded corners for the box */
+  max-width: 600px; /* Limit width for better readability */
+}
+
+/* Home Button Styles - No longer needed as global nav handles home */
+.home-button-container {
+  display: none; /* Hide the individual home button */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .content-wrapper {
+    max-width: 90%;
+  }
+
+  h1 {
+    font-size: 2.8rem;
+    letter-spacing: 6px;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    letter-spacing: 2px;
+  }
+
+  .nav-button {
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .global-header {
+    justify-content: flex-start; /* Align items to start on mobile */
+  }
+
+  .hamburger-menu {
+    display: flex; /* Show hamburger on mobile */
+  }
+
+  .global-header nav {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Start off-screen */
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95); /* Darker overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000; /* Below hamburger */
+  }
+
+  .global-header nav.nav-open {
+    left: 0; /* Slide in */
+  }
+
+  .global-header nav ul {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .global-header nav a {
+    font-size: 1.5rem;
+    padding: 10px 20px;
+  }
+
+  .landing-page-container,
+  .about-me-page,
+  .cv-page {
+    padding-top: 60px; /* Adjust for smaller header */
+    padding-bottom: 40px; /* Adjust for smaller footer */
+  }
+
+  .content-wrapper {
+    padding: 30px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    letter-spacing: 5px;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    letter-spacing: 1.5px;
+  }
+
+  .button-row {
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 15px;
+  }
+
+  .nav-button {
+    width: 80%; /* Make buttons wider */
+    max-width: 300px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .section {
+    max-width: 95%; /* Allow sections to take more width */
+    padding: 1.5rem;
+  }
+
+  .section h2 {
+    font-size: 1.5rem;
+  }
+
+  .job h3, .education-item h4 {
+    font-size: 1rem;
+  }
+
+  .skills-list li {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.8rem;
+    letter-spacing: 4px;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+  }
+
+  .content-wrapper {
+    padding: 20px;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+
+  .section h2 {
+    font-size: 1.3rem;
+  }
+
+  .job h3, .education-item h4 {
+    font-size: 1rem;
+  }
+
+  .skills-list li {
+    font-size: 0.9rem;
   }
 }
