@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/resumeproject/static/css/main.3672ff2f.css",
-    "main.js": "/resumeproject/static/js/main.f8f1f0ee.js",
+    "main.js": "/resumeproject/static/js/main.b97f73dd.js",
     "static/js/453.c252640c.chunk.js": "/resumeproject/static/js/453.c252640c.chunk.js",
     "static/media/summary-background.jpg": "/resumeproject/static/media/summary-background.cc645bb404ee9df2bde1.jpg",
     "static/media/landingpage.jpg": "/resumeproject/static/media/landingpage.c3ed55783cfab9f63580.jpg",
@@ -9,11 +9,11 @@
     "static/media/education-background.jpg": "/resumeproject/static/media/education-background.db19e206d6e19bc4ea3e.jpg",
     "index.html": "/resumeproject/index.html",
     "main.3672ff2f.css.map": "/resumeproject/static/css/main.3672ff2f.css.map",
-    "main.f8f1f0ee.js.map": "/resumeproject/static/js/main.f8f1f0ee.js.map",
+    "main.b97f73dd.js.map": "/resumeproject/static/js/main.b97f73dd.js.map",
     "453.c252640c.chunk.js.map": "/resumeproject/static/js/453.c252640c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.3672ff2f.css",
-    "static/js/main.f8f1f0ee.js"
+    "static/js/main.b97f73dd.js"
   ]
 }
