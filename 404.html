@@ -4,17 +4,9 @@
     <meta charset="utf-8">
     <title>Redirecting...</title>
     <script>
-      // Get the current path, excluding the domain
-      var path = window.location.pathname;
-      // Get the base URL of your GitHub Pages project
-      // This should match the "homepage" field in your package.json
-      var base = '/resumeproject'; // Ensure this matches your homepage setting
-
-      // Construct the new URL
-      var newPath = base + path;
-
-      // Redirect to the new URL
-      window.location.replace(newPath);
+      // Redirect to the base URL of your GitHub Pages project
+      // The client-side router will then pick up the original path from window.location.pathname
+      window.location.replace('/resumeproject/');
     </script>
   </head>
   <body>
