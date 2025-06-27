@@ -32,7 +32,7 @@ The project follows a component-based architecture, breaking down the UI into re
     *   The content is presented within a semi-transparent grey box for readability.
 
 *   **`src/CV.js`**: 
-    *   Displays the comprehensive resume content.
+    *   Displays the comprehensive resume content..
     *   Uses `skills-background.jpg` as its primary background image.
     *   Unlike a traditional multi-page CV, all sections (Summary, Experience, Skills, Education) are rendered sequentially, allowing for a continuous, "liquid flow" scrolling experience.
 
