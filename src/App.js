@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './App.css';
 import CV from './CV';
@@ -67,7 +67,7 @@ function App() {
 
 function Root() {
   return (
-    <Router basename="/resumeproject">
+    <Router>
       <App />
     </Router>
   );
