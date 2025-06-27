@@ -1,5 +1,4 @@
 import React, { forwardRef, useEffect } from 'react';
-import Summary from './components/Summary';
 import Experience from './components/Experience';
 import Skills from './components/Skills';
 import Education from './components/Education';
@@ -25,7 +24,6 @@ const CV = forwardRef((props, ref) => {
 
   return (
     <div className="cv-page" style={cvPageStyle} ref={ref}>
-      <Summary />
       <Experience />
       <Skills />
       <Education />

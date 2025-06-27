@@ -19,6 +19,11 @@ function App() {
     setIsNavOpen(!isNavOpen);
   };
 
+  // Scroll to top on route change
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   return (
     <div className="App">
       <header className="global-header">
@@ -62,7 +67,7 @@ function App() {
 
 function Root() {
   return (
-    <Router>
+    <Router basename="/resumeproject">
       <App />
     </Router>
   );

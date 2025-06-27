@@ -13,8 +13,8 @@ const LandingPage = forwardRef((props, ref) => {
       <div className="content-wrapper">
         <div className="title-block">
           <div className="horizontal-line"></div>
-          <h1 className={isLoaded ? 'text-reveal' : ''}>AJITH THATI PERSONAL WEBSITE</h1>
-          <p className={`subtitle ${isLoaded ? 'text-reveal' : ''}`} style={{ animationDelay: '0.5s' }}>MY PERSONAL WEBSITE, WHERE YOU WILL FIND A BIT ABOUT ME, MY CV, THE SITE BUILD AND LINKS TO MY SOCIALS.</p>
+          <h1 className={isLoaded ? 'text-reveal' : ''}>AJITH SURYA THATI<br />DEVOPS ENGINEER</h1>
+          <p className={`subtitle ${isLoaded ? 'text-reveal' : ''}`} style={{ animationDelay: '0.5s' }}>MY PERSONAL WEBSITE, WHERE YOU WILL FIND A BIT ABOUT ME AND MY CV.</p>
           <div className="horizontal-line"></div>
         </div>
       </div>
