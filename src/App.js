@@ -59,7 +59,7 @@ function App() {
       </TransitionGroup>
 
       <footer className="global-footer">
-        <p>© AJITH THATI</p>
+        <p>© AJITH SURYA THATI</p>
       </footer>
     </div>
   );
