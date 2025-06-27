@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <script>
+      // Get the current path, excluding the domain
+      var path = window.location.pathname;
+      // Get the base URL of your GitHub Pages project
+      // This should match the "homepage" field in your package.json
+      var base = '/resumeproject'; // Ensure this matches your homepage setting
+
+      // Construct the new URL
+      var newPath = base + path;
+
+      // Redirect to the new URL
+      window.location.replace(newPath);
+    </script>
+  </head>
+  <body>
+    If you are not redirected automatically, follow this <a href="/resumeproject/">link</a>.
+  </body>
+</html>
