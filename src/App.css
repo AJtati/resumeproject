@@ -1,8 +1,10 @@
-body {
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
   font-family: 'Montserrat', sans-serif; /* Changed to Montserrat font */
   overflow-x: hidden; /* Prevent horizontal scroll */
+  overflow-y: auto; /* Allow vertical scroll on the main page */
 }
 
 .App {
@@ -12,7 +14,7 @@ body {
   color: #ffffff;
   text-align: center;
   position: relative; /* For transitions */
-  overflow: hidden; /* Ensure sliding content is clipped */
+  /* Removed overflow: hidden; from here */
 }
 
 /* Global Header */
@@ -157,19 +159,20 @@ body {
 
 .landing-page-container,
 .about-me-page,
-.cv-page {
+.cv-page,
+.site-build-page { /* Added site-build-page */
   position: absolute; /* Position for transitions */
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  /* Removed height: 100%; to allow content to expand */
   background-size: cover; /* Ensure image covers the container */
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   min-height: 100vh; /* Ensure it takes full height */
   width: 100vw; /* Ensure it takes full width */
-  padding-top: 70px; /* Space for fixed header */
-  padding-bottom: 50px; /* Space for fixed footer */
+  padding-top: 90px; /* Increased space for fixed header */
+  padding-bottom: 70px; /* Increased space for fixed footer */
   box-sizing: border-box; /* Include padding in height calculation */
 }
 
@@ -269,45 +272,11 @@ h1 {
   animation-delay: 0.3s; /* Stagger animation */
 }
 
-.button-row {
-  display: flex;
-  gap: 30px; /* More space between buttons */
-  margin-top: 50px; /* Space above buttons */
-  margin-bottom: 50px;
-}
-
-.nav-button {
-  background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.5); /* Softer border */
-  color: #ffffff;
-  padding: 15px 35px; /* Larger padding */
-  font-size: 1.1rem; /* Larger font */
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  cursor: pointer;
-  transition: all 0.3s ease; /* Smooth transition for all properties */
-  position: relative;
-  overflow: hidden;
-}
-
-.nav-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: #ffffff;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); /* Subtle glow */
-}
-
-.copyright {
-  font-size: 0.8rem;
-  letter-spacing: 1px;
-  opacity: 0.7;
-}
-
 /* CV Page Styles */
 .cv-page {
   min-height: 100vh;
   color: #e9ecef;
   overflow-y: auto; /* Enable scrolling for content */
-  /* Removed padding-top here, now handled by global page styles */
   display: flex; /* Use flexbox for layout */
   flex-direction: column; /* Stack sections vertically */
   align-items: center; /* Center sections horizontally */
@@ -371,6 +340,41 @@ h1 {
   display: none; /* Hide the individual home button */
 }
 
+/* Site Build Page Styles */
+.site-build-page {
+  color: #ffffff;
+  text-align: center;
+  overflow-y: auto; /* Enable scrolling for content */
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack sections vertically */
+  align-items: center; /* Center sections horizontally */
+  justify-content: flex-start; /* Align content to the top */
+}
+
+.site-build-content-wrapper {
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  padding: 40px; /* Add padding to the content box */
+  border-radius: 10px; /* Rounded corners for the box */
+  max-width: 800px; /* Limit width for better readability */
+  width: 90%; /* Make it responsive */
+  margin-top: 40px; /* Add margin to push content down from header */
+  margin-bottom: 40px; /* Add margin for bottom spacing */
+  text-align: left; /* Align text to the left */
+}
+
+.site-build-content-wrapper ul {
+  list-style: disc; /* Use disc for lists */
+  margin-left: 20px;
+}
+
+.site-build-content-wrapper h2 {
+  border-bottom: 1px solid #495057;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Add shadow for readability */
+}
+
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
   .content-wrapper {
@@ -432,7 +436,8 @@ h1 {
 
   .landing-page-container,
   .about-me-page,
-  .cv-page {
+  .cv-page,
+  .site-build-page { /* Added site-build-page */
     padding-top: 60px; /* Adjust for smaller header */
     padding-bottom: 40px; /* Adjust for smaller footer */
   }

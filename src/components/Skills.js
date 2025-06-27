@@ -1,9 +1,6 @@
 import React, { forwardRef } from 'react';
-// Removed skillsBackground import
 
 const Skills = forwardRef((props, ref) => {
-  // Removed sectionStyle
-
   return (
     <section id="skills" className="section" ref={ref}>
       <h2>Technical Skills</h2>

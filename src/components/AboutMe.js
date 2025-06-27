@@ -1,6 +1,5 @@
 import React, { forwardRef } from 'react';
 import summaryBackground from '../assets/summary-background.jpg';
-// Removed HomeButton import
 
 const AboutMe = forwardRef((props, ref) => {
   const pageStyle = {
@@ -20,7 +19,6 @@ const AboutMe = forwardRef((props, ref) => {
 
   return (
     <div className="about-me-page" style={pageStyle} ref={ref}>
-      {/* Removed HomeButton */}
       <div className="about-me-content-wrapper">
         <h2>About Me</h2>
         <p>

@@ -1,5 +1,4 @@
 import React, { forwardRef, useEffect, useState } from 'react';
-// Removed Link import as buttons are now global
 
 const LandingPage = forwardRef((props, ref) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -18,10 +17,6 @@ const LandingPage = forwardRef((props, ref) => {
           <p className={`subtitle ${isLoaded ? 'text-reveal' : ''}`} style={{ animationDelay: '0.5s' }}>MY PERSONAL WEBSITE, WHERE YOU WILL FIND A BIT ABOUT ME, MY CV, THE SITE BUILD AND LINKS TO MY SOCIALS.</p>
           <div className="horizontal-line"></div>
         </div>
-
-        {/* Removed button-row */}
-
-        {/* Removed copyright */}
       </div>
     </div>
   );

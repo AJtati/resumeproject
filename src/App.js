@@ -1,17 +1,19 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './App.css';
 import CV from './CV';
 import LandingPage from './components/LandingPage';
 import AboutMe from './components/AboutMe';
+import SiteBuild from './components/SiteBuild'; // Import SiteBuild
 
 function App() {
   const location = useLocation();
   const landingPageRef = useRef(null);
   const cvRef = useRef(null);
   const aboutMeRef = useRef(null);
-  const [isNavOpen, setIsNavOpen] = useState(false);
+  const siteBuildRef = useRef(null); // New ref for SiteBuild
+  const [isNavOpen, setIsNavOpen] = React.useState(false);
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -31,7 +33,6 @@ function App() {
             <li><Link to="/about" className="nav-link" onClick={toggleNav}>ABOUT ME</Link></li>
             <li><Link to="/cv" className="nav-link" onClick={toggleNav}>CV</Link></li>
             <li><Link to="/site-build" className="nav-link" onClick={toggleNav}>SITE BUILD</Link></li>
-            
           </ul>
         </nav>
       </header>
@@ -41,13 +42,13 @@ function App() {
           key={location.key}
           classNames="fade"
           timeout={500}
-          nodeRef={location.pathname === '/' ? landingPageRef : (location.pathname === '/cv' ? cvRef : aboutMeRef)}
+          nodeRef={location.pathname === '/' ? landingPageRef : (location.pathname === '/cv' ? cvRef : (location.pathname === '/about' ? aboutMeRef : siteBuildRef))}
         >
           <Routes location={location}>
             <Route path="/" element={<LandingPage ref={landingPageRef} />} />
             <Route path="/about" element={<AboutMe ref={aboutMeRef} />} />
             <Route path="/cv" element={<CV ref={cvRef} />} />
-            {/* Add routes for Site Build and Socials later if needed */}
+            <Route path="/site-build" element={<SiteBuild ref={siteBuildRef} />} /> {/* New Route */}
           </Routes>
         </CSSTransition>
       </TransitionGroup>
