@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect } from 'react';
+import React, { forwardRef } from 'react';
 import educationBackground from '../assets/education-background.jpg'; // Using existing image as placeholder
 
 const SiteBuild = forwardRef((props, ref) => {
@@ -16,12 +16,6 @@ const SiteBuild = forwardRef((props, ref) => {
     textAlign: 'center',
     padding: '20px',
   };
-
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.scrollTop = 0; // Scroll to top when component mounts
-    }
-  }, [ref]);
 
   return (
     <div className="site-build-page" style={pageStyle} ref={ref}>

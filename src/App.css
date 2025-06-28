@@ -517,3 +517,55 @@ h1 {
     font-size: 0.9rem;
   }
 }
+
+/* Bottom Navigation Bar for Mobile */
+.bottom-nav {
+  display: none; /* Hidden by default */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  padding: 5px 0;
+}
+
+.bottom-nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+.bottom-nav-icon {
+    font-size: 1.2rem;
+}
+
+.bottom-nav-text {
+    font-size: 0.7rem;
+    margin-top: 2px;
+}
+
+@media (max-width: 768px) {
+  .bottom-nav {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .global-footer {
+    display: none; /* Hide original footer on mobile */
+  }
+
+  .landing-page-container,
+  .about-me-page,
+  .cv-page,
+  .site-build-page {
+    /* Adjust padding to make space for the bottom nav */
+    padding-bottom: 70px !important;
+  }
+}

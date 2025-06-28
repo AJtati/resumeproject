@@ -6,6 +6,7 @@ import CV from './CV';
 import LandingPage from './components/LandingPage';
 import AboutMe from './components/AboutMe';
 import SiteBuild from './components/SiteBuild'; // Import SiteBuild
+import BottomNav from './components/BottomNav'; // Import BottomNav
 
 function App() {
   const location = useLocation();
@@ -61,6 +62,7 @@ function App() {
       <footer className="global-footer">
         <p>© AJITH SURYA THATI</p>
       </footer>
+      <BottomNav />
     </div>
   );
 }
