@@ -41,6 +41,10 @@ function App() {
             <li><Link to="/site-build" className="nav-link" onClick={toggleNav}>SITE BUILD</Link></li>
           </ul>
         </nav>
+        <div className="contact-icons-header">
+          <a href="tel:+447469475250" className="contact-icon">📞</a>
+          <a href="mailto:ajithsuryathati@gmail.com" className="contact-icon">✉️</a>
+        </div>
       </header>
 
       <TransitionGroup component={null}>
