@@ -16,12 +16,6 @@ const CV = forwardRef((props, ref) => {
     paddingTop: '20px',
   };
 
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.scrollTop = 0; // Scroll to top when component mounts
-    }
-  }, [ref]);
-
   return (
     <div className="cv-page" style={cvPageStyle} ref={ref}>
       <Experience />
