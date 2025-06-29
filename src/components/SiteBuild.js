@@ -1,7 +1,11 @@
 import React, { forwardRef } from 'react';
+import useIntersectionObserver from '../hooks/useIntersectionObserver';
+import '../reveal.css';
 import educationBackground from '../assets/education-background.jpg'; // Using existing image as placeholder
 
 const SiteBuild = forwardRef((props, ref) => {
+  const [contentRef, isIntersecting] = useIntersectionObserver({ threshold: 0.1 });
+
   const pageStyle = {
     backgroundImage: `url(${educationBackground})`,
     backgroundSize: 'cover',
@@ -19,7 +23,10 @@ const SiteBuild = forwardRef((props, ref) => {
 
   return (
     <div className="site-build-page" style={pageStyle} ref={ref}>
-      <div className="site-build-content-wrapper">
+      <div 
+        className={`site-build-content-wrapper reveal ${isIntersecting ? 'visible' : ''}`}
+        ref={contentRef}
+      >
         <h2>Project Implementation Methods</h2>
         <p>
           This website was developed using a <strong>Component-Based Architecture</strong> with React, emphasizing modularity and reusability. The development followed an <strong>Iterative and Agile Methodology</strong>, allowing for continuous refinement and adaptation based on design goals and user feedback.
@@ -77,7 +84,7 @@ const SiteBuild = forwardRef((props, ref) => {
         </p>
 
         <h2>Wireframe Diagram (Conceptual)</h2>
-        <pre style={{ textAlign: 'left', backgroundColor: 'rgba(255,255,255,0.1)', padding: '15px', borderRadius: '5px', overflowX: 'auto' }}>
+        <pre className="wireframe-diagram" style={{ textAlign: 'left', backgroundColor: 'rgba(255,255,255,0.1)', padding: '15px', borderRadius: '5px', overflowX: 'auto' }}>
 {`
 +------------------------------------------------------------------+
 | [GLOBAL HEADER]                                                  |

@@ -1,7 +1,11 @@
 import React, { forwardRef } from 'react';
+import useIntersectionObserver from '../hooks/useIntersectionObserver';
+import '../reveal.css';
 import summaryBackground from '../assets/summary-background.jpg';
 
 const AboutMe = forwardRef((props, ref) => {
+  const [contentRef, isIntersecting] = useIntersectionObserver({ threshold: 0.1 });
+
   const pageStyle = {
     backgroundImage: `url(${summaryBackground})`,
     backgroundSize: 'cover',
@@ -19,7 +23,10 @@ const AboutMe = forwardRef((props, ref) => {
 
   return (
     <div className="about-me-page" style={pageStyle} ref={ref}>
-      <div className="about-me-content-wrapper">
+      <div 
+        className={`about-me-content-wrapper reveal ${isIntersecting ? 'visible' : ''}`}
+        ref={contentRef}
+      >
         <h2>About Me</h2>
         <p>
           Welcome! I'm Ajith Thati, a DevOps Engineer with over 8 years of experience, specializing in transforming complex challenges into streamlined, automated solutions. My journey in Agile environments has honed my ability to not only build and optimize critical deployments across AWS and Azure but also to anticipate and resolve issues with precision.

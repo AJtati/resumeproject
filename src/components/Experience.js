@@ -105,7 +105,7 @@ const Experience = forwardRef((props, ref) => {
 
       <div className="job">
         <h3>Environment:</h3>
-        <p className="text-muted">Terraform, Ansible, Maven, GIT, Nexus, PowerShell, AWS, Jenkins, Docker, Gitlab, Jfrog Artifactory, Jira, Selenium, Windows, Redhat linux.</p>
+        <p className="environment-list">Terraform, Ansible, Maven, GIT, Nexus, PowerShell, AWS, Jenkins, Docker, Gitlab, Jfrog Artifactory, Jira, Selenium, Windows, Redhat linux.</p>
       </div>
     </section>
   );

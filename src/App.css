@@ -345,10 +345,19 @@ h1 {
 
 .job h3, .education-item h4 {
   margin-bottom: 0.25rem;
+  color: #ffffff;
 }
 
 .text-muted {
   color: #868e96 !important;
+}
+
+.education-item-muted {
+  color: #ffffff !important;
+}
+
+.environment-list {
+  color: #ffffff !important;
 }
 
 .skills-list {
@@ -524,6 +533,11 @@ h1 {
 
   .skills-list li {
     font-size: 0.9rem;
+  }
+
+  .wireframe-diagram {
+    overflow-x: auto;
+    font-size: 0.8rem;
   }
 }
 
