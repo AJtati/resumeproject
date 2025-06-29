@@ -8,8 +8,10 @@ import AboutMe from './components/AboutMe';
 import SiteBuild from './components/SiteBuild'; // Import SiteBuild
 import BottomNav from './components/BottomNav'; // Import BottomNav
 import ScrollManager from './components/ScrollManager'; // Import ScrollManager
+import useViewportHeight from './hooks/useViewportHeight'; // Import useViewportHeight
 
 function App() {
+  useViewportHeight(); // Call the hook
   const location = useLocation();
   const landingPageRef = useRef(null);
   const cvRef = useRef(null);
@@ -54,7 +56,7 @@ function App() {
       <TransitionGroup component={null}>
         <CSSTransition
           key={location.key}
-          classNames="fade"
+          classNames={location.pathname === '/cv' ? 'zoom-in' : 'fade'}
           timeout={500}
           nodeRef={pageRefs[location.pathname]}
         >

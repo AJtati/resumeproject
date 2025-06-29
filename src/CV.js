@@ -8,7 +8,7 @@ import skillsBackground from './assets/skills-background.jpg';
 import './App.css';
 
 const CV = forwardRef((props, ref) => {
-  const [experienceRef, isExperienceIntersecting] = useIntersectionObserver({ threshold: 0.1 });
+  const [experienceRef, isExperienceIntersecting] = useIntersectionObserver({ threshold: 0.01 });
   const [skillsRef, isSkillsIntersecting] = useIntersectionObserver({ threshold: 0.1 });
   const [educationRef, isEducationIntersecting] = useIntersectionObserver({ threshold: 0.1 });
 
