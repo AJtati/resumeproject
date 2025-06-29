@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import CV from './CV';
@@ -13,10 +13,11 @@ import landingPageBackground from './assets/landingpage.jpg';
 function App() {
   
   const location = useLocation();
-  const landingPageRef = useRef(null);
-  const cvRef = useRef(null);
-  const aboutMeRef = useRef(null);
-  const siteBuildRef = useRef(null); // New ref for SiteBuild
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   const [isNavOpen, setIsNavOpen] = React.useState(false);
 
   const toggleNav = () => {
@@ -55,10 +56,10 @@ function App() {
           className="flex-grow"
         >
           <Routes location={location}>
-            <Route path="/" element={<LandingPage ref={landingPageRef} />} />
-            <Route path="/about" element={<AboutMe ref={aboutMeRef} />} />
-            <Route path="/cv" element={<CV ref={cvRef} />} />
-            <Route path="/site-build" element={<SiteBuild ref={siteBuildRef} />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/about" element={<AboutMe />} />
+            <Route path="/cv" element={<CV />} />
+            <Route path="/site-build" element={<SiteBuild />} />
           </Routes>
         </motion.div>
       </AnimatePresence>

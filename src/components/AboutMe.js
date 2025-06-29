@@ -5,9 +5,8 @@ import { aboutMe } from '../content';
 const AboutMe = forwardRef((props, ref) => {
   return (
     <motion.div
-      className="relative min-h-screen w-screen bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center pt-24 pb-16"
+      className="relative min-h-screen w-screen bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center pt-16 pb-16 md:pt-24"
       style={{ backgroundImage: `url(${aboutMe.background})` }}
-      ref={ref}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
