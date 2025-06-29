@@ -7,6 +7,7 @@ import LandingPage from './components/LandingPage';
 import AboutMe from './components/AboutMe';
 import SiteBuild from './components/SiteBuild'; // Import SiteBuild
 import BottomNav from './components/BottomNav'; // Import BottomNav
+import ScrollManager from './components/ScrollManager'; // Import ScrollManager
 
 function App() {
   const location = useLocation();
@@ -20,13 +21,16 @@ function App() {
     setIsNavOpen(!isNavOpen);
   };
 
-  // Scroll to top on route change
-  React.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
+  const pageRefs = {
+    '/': landingPageRef,
+    '/cv': cvRef,
+    '/about': aboutMeRef,
+    '/site-build': siteBuildRef,
+  };
 
   return (
     <div className="App">
+      <ScrollManager refs={pageRefs} />
       <header className="global-header">
         <div className="hamburger-menu" onClick={toggleNav}>
           <div className="bar"></div>
@@ -52,7 +56,7 @@ function App() {
           key={location.key}
           classNames="fade"
           timeout={500}
-          nodeRef={location.pathname === '/' ? landingPageRef : (location.pathname === '/cv' ? cvRef : (location.pathname === '/about' ? aboutMeRef : siteBuildRef))}
+          nodeRef={pageRefs[location.pathname]}
         >
           <Routes location={location}>
             <Route path="/" element={<LandingPage ref={landingPageRef} />} />
