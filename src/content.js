@@ -1,3 +1,8 @@
+import landingPageBackground from './assets/landingpage.jpg';
+import aboutMeBackground from './assets/summary-background.jpg';
+import cvBackground from './assets/skills-background.jpg';
+import siteBuildBackground from './assets/education-background.jpg';
+
 export const aboutMe = {
   title: 'About Me',
   paragraphs: [
@@ -118,6 +123,10 @@ export const landingPage = {
   title: 'AJITH SURYA THATI',
   subtitle: 'DEVOPS ENGINEER',
   intro: 'MY PERSONAL WEBSITE, WHERE YOU WILL FIND A BIT ABOUT ME AND MY CV.'
+};
+
+export const cv = {
+  background: cvBackground
 };
 
 export const hero = {
