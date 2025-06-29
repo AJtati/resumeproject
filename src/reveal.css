@@ -1,0 +1,9 @@
+.reveal {
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity 0.8s ease-out;
+}
+
+.reveal.visible {
+  opacity: 1;
+}

@@ -7,8 +7,11 @@ import LandingPage from './components/LandingPage';
 import AboutMe from './components/AboutMe';
 import SiteBuild from './components/SiteBuild'; // Import SiteBuild
 import BottomNav from './components/BottomNav'; // Import BottomNav
+import ScrollManager from './components/ScrollManager'; // Import ScrollManager
+import useViewportHeight from './hooks/useViewportHeight'; // Import useViewportHeight
 
 function App() {
+  useViewportHeight(); // Call the hook
   const location = useLocation();
   const landingPageRef = useRef(null);
   const cvRef = useRef(null);
@@ -20,13 +23,16 @@ function App() {
     setIsNavOpen(!isNavOpen);
   };
 
-  // Scroll to top on route change
-  React.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
+  const pageRefs = {
+    '/': landingPageRef,
+    '/cv': cvRef,
+    '/about': aboutMeRef,
+    '/site-build': siteBuildRef,
+  };
 
   return (
     <div className="App">
+      <ScrollManager refs={pageRefs} />
       <header className="global-header">
         <div className="hamburger-menu" onClick={toggleNav}>
           <div className="bar"></div>
@@ -41,14 +47,18 @@ function App() {
             <li><Link to="/site-build" className="nav-link" onClick={toggleNav}>SITE BUILD</Link></li>
           </ul>
         </nav>
+        <div className="contact-icons-header">
+          <a href="tel:+447469475250" className="contact-icon">📞</a>
+          <a href="mailto:ajithsuryathati@gmail.com" className="contact-icon">✉️</a>
+        </div>
       </header>
 
       <TransitionGroup component={null}>
         <CSSTransition
           key={location.key}
-          classNames="fade"
+          classNames={location.pathname === '/cv' ? 'zoom-in' : 'fade'}
           timeout={500}
-          nodeRef={location.pathname === '/' ? landingPageRef : (location.pathname === '/cv' ? cvRef : (location.pathname === '/about' ? aboutMeRef : siteBuildRef))}
+          nodeRef={pageRefs[location.pathname]}
         >
           <Routes location={location}>
             <Route path="/" element={<LandingPage ref={landingPageRef} />} />
