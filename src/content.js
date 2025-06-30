@@ -4,6 +4,7 @@ import cvBackground from './assets/skills-background.jpg';
 import siteBuildBackground from './assets/education-background.jpg';
 
 export const aboutMe = {
+  background: aboutMeBackground,
   title: 'About Me',
   paragraphs: [
     "Welcome! I'm Ajith Thati, a DevOps Engineer with over 8 years of experience, specializing in transforming complex challenges into streamlined, automated solutions. My journey in Agile environments has honed my ability to not only build and optimize critical deployments across AWS and Azure but also to anticipate and resolve issues with precision.",
@@ -72,13 +73,10 @@ export const siteBuild = {
   },
   githubRepo: {
     title: 'GitHub Repository',
-    text: 'The complete source code for this project is available on GitHub:',
+    text: 'The complete source code for this project is available on',
     link: 'https://github.com/AJtati/resumeproject'
   },
-  deploymentUrl: {
-    title: 'Deployment URL:',
-    link: 'https://AJtati.github.io/resumeproject/'
-  }
+  
 };
 
 export const landingPage = {
