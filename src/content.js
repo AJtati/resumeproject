@@ -14,45 +14,59 @@ export const aboutMe = {
 
 export const siteBuild = {
   title: 'Project Implementation Methods',
-  intro: 'This website was developed using a <strong>Component-Based Architecture</strong> with React, emphasizing modularity and reusability. The development followed an <strong>Iterative and Agile Methodology</strong>, allowing for continuous refinement and adaptation based on design goals and user feedback.',
+  intro: 'This website was developed as a Single-Page Application (SPA) using a <strong>Component-Based Architecture</strong> with React, emphasizing modularity and reusability. The development followed an <strong>Iterative and Agile Methodology</strong>, allowing for continuous refinement and adaptation based on design goals and user feedback.',
   howIbuiltIt: {
     title: 'How I Built This Website',
-    intro: 'This website was created to share my professional profile, CV, and personal information in a modern, accessible format. Below is a brief overview of how I planned, developed, and deployed this project.',
+    intro: 'This personal portfolio website was designed and developed to showcase my professional profile, CV, and technical skills in a modern, accessible, and interactive format. Below is a detailed overview of the technical planning, development, and deployment phases of this project.',
     planning: {
-      title: '1️⃣ Project Planning',
+      title: '1️⃣ Project Planning & Architecture',
       points: [
-        'Decided to build a personal resume website to showcase my skills, CV, and a bit about myself.',
-        'Designed clear sections: Home, About Me, CV, and Site Build.'
+        'Defined core content modules: Home (Hero), About Me, CV (Experience, Education, Skills), and Site Build (this page).',
+        'Architected a responsive, component-based React application to ensure modularity, reusability, and maintainability.',
+        'Outlined design principles focusing on modern aesthetics, smooth UI animations, and optimized performance across devices.'
       ]
     },
     development: {
-      title: '2️⃣ Development',
+      title: '2️⃣ Development & Implementation',
       points: [
-        'Used HTML, CSS, and JavaScript (or React) for a single-page application (SPA) with smooth scrolling and seamless transitions.',
-        'Made it fully responsive for desktop and mobile.',
-        'Added reusable components for navigation, footer, and sections.',
-        'Configured client-side routing with HashRouter for direct links on GitHub Pages.'
+        'Implemented a Single-Page Application (SPA) using React.js to provide a dynamic and seamless user experience without full page reloads.',
+        'Utilized Tailwind CSS for a utility-first CSS framework, enabling rapid and consistent styling with highly customizable, responsive designs.',
+        'Integrated Framer Motion for declarative, production-ready animations, enhancing user engagement with smooth page transitions, element reveals, and interactive components.',
+        'Ensured full responsiveness across various breakpoints (desktop, tablet, mobile) using Tailwind CSS utilities and flexible React component layouts.',
+        'Developed reusable and encapsulated React components (e.g., Hero, AboutMe, Experience, Education, Skills) to promote a modular codebase and simplify future updates.',
+        'Configured client-side routing using React Router DOM (specifically HashRouter) to manage navigation within the SPA, ensuring compatibility with static hosting environments like GitHub Pages.'
       ]
     },
     versionControl: {
-      title: '3️⃣ Version Control ⚙️',
+      title: '3️⃣ Version Control & Collaboration',
       points: [
-        'Managed all code with Git.',
-        'Pushed updates to a public GitHub repository.'
+        'Managed all source code using Git, a distributed version control system, for tracking changes, branching, and merging.',
+        'Hosted the project repository publicly on GitHub, facilitating code collaboration and version history management.'
       ]
     },
     deployment: {
-      title: '4️⃣ Deployment',
+      title: '4️⃣ Deployment & Hosting',
       points: [
-        'Hosted the site using GitHub Pages.',
-        'Added a fallback 404.html to support client-side routing.',
-        'Tested all pages and transitions to ensure a smooth experience.'
+        'Deployed the static React application using GitHub Pages, leveraging its capabilities for hosting single-page applications directly from a GitHub repository.',
+        
+        'Conducted comprehensive testing across different browsers and devices to verify functionality, visual consistency, page transitions, and responsiveness.'
       ]
     },
     maintenance: {
-      title: '5️⃣ Maintenance ✅',
+      title: '5️⃣ Maintenance & Future Enhancements',
       points: [
-        'Continue to update and improve the site.'
+        'Committed to ongoing updates, performance optimizations, and feature enhancements based on feedback and the evolution of web technologies.',
+        'The modular architecture allows for easy integration of new sections or updates to existing content.'
+      ]
+    },
+    technologiesUsed: {
+      title: 'Key Technologies Used',
+      points: [
+        'React.js: A JavaScript library for building user interfaces, utilized for its component-based architecture and efficient DOM updates.',
+        'Tailwind CSS: A utility-first CSS framework that enabled rapid UI development and highly customizable, responsive designs directly in markup.',
+        'Framer Motion: A production-ready motion library for React, used to implement declarative animations and interactive gestures, enhancing the overall user experience.',
+        'React Router DOM: A collection of navigational components that compose declaratively with your application, used for client-side routing within the SPA.',
+        'Git & GitHub Pages: Git for version control and GitHub Pages for static site hosting and continuous deployment.'
       ]
     }
   },
@@ -64,58 +78,6 @@ export const siteBuild = {
   deploymentUrl: {
     title: 'Deployment URL:',
     link: 'https://AJtati.github.io/resumeproject/'
-  },
-  wireframe: {
-    title: 'Wireframe Diagram (Conceptual)',
-    diagram: `
-+------------------------------------------------------------------+
-| [GLOBAL HEADER]                                                  |
-| [HOME] [ABOUT ME] [CV] [SITE BUILD]                              |
-+------------------------------------------------------------------+
-|                                                                  |
-|                                                                  |
-|                                                                  |
-|                  +---------------------------------+             |
-|                  | [BACKGROUND IMAGE/ANIMATED GRADIENT] |
-|                  |                                 |             |
-|                  |  +---------------------------+  |             |
-|                  |  | [TEXT CONTENT BOX]        |  |             |
-|                  |  |                           |  |             |
-|                  |  |  AJITH THATI PERSONAL     |  |             |
-|                  |  |  WEBSITE                  |  |             |
-|                  |  |                           |  |             |
-|                  |  |  MY PERSONAL WEBSITE...   |  |             |
-|                  |  |                           |  |             |
-|                  |  +---------------------------+  |             |
-|                  |                                 |             |
-|                  +---------------------------------+             |
-|                                                                  |
-|                                                                  |
-|                                                                  |
-+------------------------------------------------------------------+
-| [GLOBAL FOOTER]                                                  |
-| © AJITH THATI                                                    |
-+------------------------------------------------------------------+
-
-
-[MOBILE VIEW - HAMBURGER MENU OPEN]
-+------------------------------------------------------------------+
-| [HAMBURGER ICON]                                                 |
-+------------------------------------------------------------------+
-|                                                                  |
-|                  +---------------------------+                   |
-|                  | [OVERLAY MENU]            |                   |
-|                  |                           |                   |
-|                  |  [HOME]                   |                   |
-|                  |  [ABOUT ME]               |                   |
-|                  |  [CV]                     |                   |
-|                  |  [SITE BUILD]             |                   |
-|                  |                           |                   |
-|                  +---------------------------+                   |
-|                                                                  |
-|                                                                  |
-+------------------------------------------------------------------+
-`
   }
 };
 
