@@ -79,24 +79,10 @@ const SiteBuild = forwardRef((props, ref) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
         >
-          {siteBuild.githubRepo.text}
-          <br />
-          <a href={siteBuild.githubRepo.link} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline break-words">
-            {siteBuild.githubRepo.link}
-          </a>
+          {siteBuild.githubRepo.text} <a href={siteBuild.githubRepo.link} target="_blank" rel="noopener noreferrer" className="font-bold text-white">GITHUB</a>
         </motion.p>
 
-        <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2 mt-8">{siteBuild.deploymentUrl.title}</h2>
-        <motion.p
-          className="mb-4 text-lg leading-relaxed"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.9 }}
-        >
-          <a href={siteBuild.deploymentUrl.link} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline break-words">
-            {siteBuild.deploymentUrl.link}
-          </a>
-        </motion.p>
+        
 
         
       </motion.div>
