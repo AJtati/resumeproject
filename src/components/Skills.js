@@ -16,7 +16,7 @@ const Skills = () => {
         {skills.skills.map((skill, index) => (
           <motion.li
             key={index}
-            className="mb-2 text-base md:text-lg text-left md:text-justify"
+            className="mb-2 text-lg md:text-xl text-left md:text-justify"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.3 + index * 0.05 }}

@@ -25,7 +25,7 @@ const Experience = () => {
           <p className="text-gray-400 text-sm">{job.company} | {job.period}</p>
           <ul className="list-disc ml-5 mt-2">
             {job.tasks.map((task, i) => (
-              <li key={i} className="mb-1 text-sm md:text-base text-left md:text-justify">{task}</li>
+              <li key={i} className="mb-1 text-base md:text-lg text-left md:text-justify">{task}</li>
             ))}
           </ul>
         </motion.div>
