@@ -38,7 +38,7 @@ const SiteBuild = forwardRef((props, ref) => {
           {siteBuild.howIbuiltIt.intro}
         </motion.p>
 
-        {Object.keys(siteBuild.howIbuiltIt).filter(key => key !== 'title' && key !== 'intro').map((sectionKey, sectionIndex) => (
+        {Object.keys(siteBuild.howIbuiltIt).filter(key => key !== 'title' && key !== 'intro' && key !== 'technologiesUsed').map((sectionKey, sectionIndex) => (
           <div key={sectionIndex}>
             <h3 className="text-2xl font-semibold mb-4 mt-6">{siteBuild.howIbuiltIt[sectionKey].title}</h3>
             <ul className="list-disc ml-5 mb-4">
@@ -56,6 +56,21 @@ const SiteBuild = forwardRef((props, ref) => {
             </ul>
           </div>
         ))}
+
+        <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2 mt-8">{siteBuild.howIbuiltIt.technologiesUsed.title}</h2>
+        <ul className="list-disc ml-5 mb-4">
+          {siteBuild.howIbuiltIt.technologiesUsed.points.map((tech, techIndex) => (
+            <motion.li
+              key={techIndex}
+              className="mb-2 text-lg"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 + Object.keys(siteBuild.howIbuiltIt).length * 0.1 + techIndex * 0.05 }}
+            >
+              {tech}
+            </motion.li>
+          ))}
+        </ul>
 
         <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2 mt-8">{siteBuild.githubRepo.title}</h2>
         <motion.p
@@ -83,15 +98,7 @@ const SiteBuild = forwardRef((props, ref) => {
           </a>
         </motion.p>
 
-        <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2 mt-8">{siteBuild.wireframe.title}</h2>
-        <motion.pre
-          className="bg-gray-800 bg-opacity-50 p-4 rounded-lg overflow-x-auto text-left text-sm md:text-base"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.0 }}
-        >
-          {siteBuild.wireframe.diagram}
-        </motion.pre>
+        
       </motion.div>
     </motion.div>
   );
