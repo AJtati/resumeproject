@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 import { motion } from 'framer-motion';
 import { aboutMe } from '../content';
+import profilePic from '../assets/profile.jpg';
 
 const AboutMe = forwardRef((props, ref) => {
   return (
@@ -20,8 +21,16 @@ const AboutMe = forwardRef((props, ref) => {
         transition={{ duration: 0.8, delay: 0.2 }}
       >
         <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2">{aboutMe.title}</h2>
+        <motion.img
+          src={profilePic}
+          alt="Profile"
+          className="float-right w-32 h-32 md:w-40 md:h-40 rounded-full object-cover ml-6 mb-6 shadow-lg"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        />
         {aboutMe.paragraphs.map((paragraph, index) => (
-          <p key={index} className="mb-4 text-lg leading-relaxed">{paragraph}</p>
+          <p key={index} className="mb-4 text-lg md:text-xl leading-relaxed text-left md:text-justify">{paragraph}</p>
         ))}
       </motion.div>
     </motion.div>
