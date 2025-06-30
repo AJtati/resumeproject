@@ -21,7 +21,7 @@ const Education = () => {
           transition={{ duration: 0.5, delay: 0.3 + index * 0.05 }}
         >
           <h4 className="text-xl font-semibold mb-1 text-white">{degree.degree}</h4>
-          <p className="text-white text-sm">{degree.university} | {degree.period}</p>
+          <p className="text-white text-xs md:text-sm text-left md:text-justify">{degree.university} | {degree.period}</p>
         </motion.div>
       ))}
     </motion.section>

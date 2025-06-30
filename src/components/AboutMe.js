@@ -30,7 +30,7 @@ const AboutMe = forwardRef((props, ref) => {
           transition={{ duration: 0.6, delay: 0.4 }}
         />
         {aboutMe.paragraphs.map((paragraph, index) => (
-          <p key={index} className="mb-4 text-lg leading-relaxed">{paragraph}</p>
+          <p key={index} className="mb-4 text-base md:text-lg leading-relaxed text-left md:text-justify">{paragraph}</p>
         ))}
       </motion.div>
     </motion.div>

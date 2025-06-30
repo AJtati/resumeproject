@@ -21,7 +21,7 @@ const SiteBuild = forwardRef((props, ref) => {
       >
         <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2">{siteBuild.title}</h2>
         <motion.p
-          className="mb-4 text-lg leading-relaxed"
+          className="mb-4 text-base md:text-lg leading-relaxed text-left md:text-justify"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
@@ -30,7 +30,7 @@ const SiteBuild = forwardRef((props, ref) => {
 
         <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2 mt-8">{siteBuild.howIbuiltIt.title}</h2>
         <motion.p
-          className="mb-4 text-lg leading-relaxed"
+          className="mb-4 text-base md:text-lg leading-relaxed text-left md:text-justify"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
@@ -45,7 +45,7 @@ const SiteBuild = forwardRef((props, ref) => {
               {siteBuild.howIbuiltIt[sectionKey].points.map((point, pointIndex) => (
                 <motion.li
                   key={pointIndex}
-                  className="mb-2 text-lg"
+                  className="mb-2 text-base md:text-lg text-left md:text-justify"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.5 + sectionIndex * 0.1 + pointIndex * 0.05 }}
