@@ -1,37 +1,30 @@
 import React, { forwardRef } from 'react';
-import summaryBackground from '../assets/summary-background.jpg';
+import { motion } from 'framer-motion';
+import { aboutMe } from '../content';
 
 const AboutMe = forwardRef((props, ref) => {
-  const pageStyle = {
-    backgroundImage: `url(${summaryBackground})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: '#ffffff',
-    textAlign: 'center',
-    padding: '20px',
-  };
-
   return (
-    <div className="about-me-page" style={pageStyle} ref={ref}>
-      <div className="about-me-content-wrapper">
-        <h2>About Me</h2>
-        <p>
-          Welcome! I'm Ajith Thati, a DevOps Engineer with over 8 years of experience, specializing in transforming complex challenges into streamlined, automated solutions. My journey in Agile environments has honed my ability to not only build and optimize critical deployments across AWS and Azure but also to anticipate and resolve issues with precision.
-        </p>
-        <p>
-          Beyond traditional infrastructure, my expertise extends to the cutting edge of problem-solving, particularly in the realm of prompt engineering. Just as I architect robust CI/CD pipelines and manage intricate cloud resources, I apply a similar systematic approach to crafting effective prompts for AI. This involves a deep understanding of system behavior, iterative refinement, and a keen eye for detail – skills directly transferable from optimizing cloud-native tools to eliciting optimal responses from advanced models.
-        </p>
-        <p>
-          I thrive on continuous learning and am a dedicated team player, always ready to take independent responsibility and contribute to innovative solutions. Whether it's automating infrastructure or engineering the perfect prompt, my goal remains consistent: to deliver efficient, reliable, and impactful results.
-        </p>
-      </div>
-    </div>
+    <motion.div
+      className="relative min-h-screen w-screen bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center pt-16 pb-16 md:pt-24"
+      style={{ backgroundImage: `url(${aboutMe.background})` }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 opacity-70 animate-gradient-xy z-10"></div>
+      <motion.div
+        className="relative z-20 bg-black bg-opacity-70 p-10 rounded-lg max-w-2xl w-11/12 text-left"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2">{aboutMe.title}</h2>
+        {aboutMe.paragraphs.map((paragraph, index) => (
+          <p key={index} className="mb-4 text-lg leading-relaxed">{paragraph}</p>
+        ))}
+      </motion.div>
+    </motion.div>
   );
 });
 

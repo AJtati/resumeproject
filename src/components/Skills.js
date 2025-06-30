@@ -1,25 +1,32 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { skills } from '../content';
 
-const Skills = forwardRef((props, ref) => {
+const Skills = () => {
   return (
-    <section id="skills" className="section" ref={ref}>
-      <h2>Technical Skills</h2>
-      <ul className="skills-list">
-        <li><strong>Operating Systems:</strong> Linux (RedHat), Windows</li>
-        <li><strong>Version Control:</strong> Git, GitHub</li>
-        <li><strong>CI/CD:</strong> Jenkins, GitLab, GitHub Actions, Concourse</li>
-        <li><strong>Cloud Platforms:</strong> AWS (EC2, VPC, ELB, S3, RDS, Route53, IAM, Lambda), Azure</li>
-        <li><strong>Configuration Management:</strong> Ansible, Chef</li>
-        <li><strong>Infrastructure as Code:</strong> Terraform, AWS CloudFormation</li>
-        <li><strong>Containerization:</strong> Docker, Kubernetes, Docker-Swarm</li>
-        <li><strong>Service Mesh:</strong> Istio</li>
-        <li><strong>Monitoring:</strong> Splunk</li>
-        <li><strong>Scripting:</strong> Bash/Shell, PowerShell</li>
-        <li><strong>Project Management:</strong> JIRA</li>
-        <li><strong>Methodologies:</strong> Agile, Scrum, SDLC</li>
+    <motion.section
+      id="skills"
+      className="p-8 my-5 relative bg-black bg-opacity-50 max-w-4xl rounded-lg text-left w-full"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+    >
+      <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2">{skills.title}</h2>
+      <ul className="list-none p-0">
+        {skills.skills.map((skill, index) => (
+          <motion.li
+            key={index}
+            className="mb-2 text-lg"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 + index * 0.05 }}
+          >
+            <strong className="text-blue-400">{skill.category}:</strong> {skill.value}
+          </motion.li>
+        ))}
       </ul>
-    </section>
+    </motion.section>
   );
-});
+};
 
 export default Skills;

@@ -1,16 +1,31 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { education } from '../content';
 
-const Education = forwardRef((props, ref) => {
+const Education = () => {
   return (
-    <section id="education" className="section" ref={ref}>
-      <h4>Master of Science in Computer Science</h4>
-      <p className="text-muted">Teesside University | Jan 2021 - Jan 2023</p>
-      <div className="education-item">
-        <h4>Bachelor of Technology</h4>
-        <p className="text-muted">Jawaharlal Nehru Technological University | 2012 - 2016</p>
-      </div>
-    </section>
+    <motion.section
+      id="education"
+      className="p-8 my-5 relative bg-black bg-opacity-50 max-w-4xl rounded-lg text-left w-full"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+    >
+      <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2">{education.title}</h2>
+      {education.degrees.map((degree, index) => (
+        <motion.div
+          className="mb-6"
+          key={index}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 + index * 0.05 }}
+        >
+          <h4 className="text-xl font-semibold mb-1 text-white">{degree.degree}</h4>
+          <p className="text-white text-sm">{degree.university} | {degree.period}</p>
+        </motion.div>
+      ))}
+    </motion.section>
   );
-});
+};
 
 export default Education;
