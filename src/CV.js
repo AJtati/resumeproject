@@ -1,39 +1,46 @@
 import React, { forwardRef } from 'react';
+import { motion } from 'framer-motion';
 import Experience from './components/Experience';
 import Skills from './components/Skills';
 import Education from './components/Education';
-import useIntersectionObserver from './hooks/useIntersectionObserver';
-import './reveal.css';
-import skillsBackground from './assets/skills-background.jpg';
-import './App.css';
+import { cv } from './content';
 
 const CV = forwardRef((props, ref) => {
-  const [experienceRef, isExperienceIntersecting] = useIntersectionObserver({ threshold: 0.01 });
-  const [skillsRef, isSkillsIntersecting] = useIntersectionObserver({ threshold: 0.1 });
-  const [educationRef, isEducationIntersecting] = useIntersectionObserver({ threshold: 0.1 });
-
-  const cvPageStyle = {
-    backgroundImage: `url(${skillsBackground})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    minHeight: '100vh',
-    color: '#ffffff',
-    paddingTop: '20px',
-  };
-
   return (
-    <div className="cv-page" style={cvPageStyle} ref={ref}>
-      <div ref={experienceRef} className={`reveal ${isExperienceIntersecting ? 'visible' : ''}`}>
+    <motion.div
+      className="relative min-h-screen w-screen bg-cover bg-center bg-no-repeat flex flex-col items-center pt-16 pb-16 md:pt-24"
+      style={{ backgroundImage: `url(${cv.background})` }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 opacity-70 animate-gradient-xy z-10"></div>
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="relative z-20 w-11/12 max-w-4xl px-4"
+      >
         <Experience />
-      </div>
-      <div ref={skillsRef} className={`reveal ${isSkillsIntersecting ? 'visible' : ''}`}>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+        className="relative z-20 w-11/12 max-w-4xl"
+      >
         <Skills />
-      </div>
-      <div ref={educationRef} className={`reveal ${isEducationIntersecting ? 'visible' : ''}`}>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+        className="relative z-20 w-11/12 max-w-4xl"
+      >
         <Education />
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 });
 

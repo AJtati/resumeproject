@@ -1,29 +1,47 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { experience } from '../content';
 
-const Experience = forwardRef((props, ref) => {
+const Experience = () => {
   return (
-    <section id="experience" className="section" ref={ref}>
-      <h2>{experience.title}</h2>
+    <motion.section
+      id="experience"
+      className="p-8 my-5 relative bg-black bg-opacity-50 max-w-4xl rounded-lg text-left w-full"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+    >
+      <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2">{experience.title}</h2>
 
       {experience.jobs.map((job, index) => (
-        <div className="job" key={index}>
-          <h3>{job.title}</h3>
-          <p className="text-muted">{job.company} | {job.period}</p>
-          <ul>
+        <motion.div
+          className="mb-6"
+          key={index}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 + index * 0.1 }}
+        >
+          <h3 className="text-xl font-semibold mb-1 text-white">{job.title}</h3>
+          <p className="text-gray-400 text-sm">{job.company} | {job.period}</p>
+          <ul className="list-disc ml-5 mt-2">
             {job.tasks.map((task, i) => (
-              <li key={i}>{task}</li>
+              <li key={i} className="mb-1 text-base">{task}</li>
             ))}
           </ul>
-        </div>
+        </motion.div>
       ))}
 
-      <div className="job">
-        <h3>{experience.environment.title}</h3>
-        <p className="environment-list">{experience.environment.text}</p>
-      </div>
-    </section>
+      <motion.div
+        className="mb-6"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3 + experience.jobs.length * 0.1 }}
+      >
+        <h3 className="text-xl font-semibold mb-1 text-white">{experience.environment.title}</h3>
+        <p className="text-white text-base">{experience.environment.text}</p>
+      </motion.div>
+    </motion.section>
   );
-});
+};
 
 export default Experience;
