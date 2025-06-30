@@ -7,6 +7,7 @@ import AboutMe from './components/AboutMe';
 import SiteBuild from './components/SiteBuild'; // Import SiteBuild
 import BottomNav from './components/BottomNav'; // Import BottomNav
 import landingPageBackground from './assets/landingpage.jpg';
+import logoT from './assets/logo1.png';
 
 
 
@@ -27,6 +28,16 @@ function App() {
   return (
     <div className="flex flex-col min-h-screen text-white text-center relative overflow-x-hidden bg-cover bg-center" style={{ backgroundImage: `url(${landingPageBackground})` }}>
       <header className="fixed top-0 left-0 w-full bg-black bg-opacity-80 py-4 z-50 shadow-lg flex justify-center items-center">
+        {/* Mobile Logo (centered) */}
+        <div className="md:hidden absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center items-center">
+          <img src={logoT} alt="Logo" className="h-10" />
+        </div>
+
+        {/* Desktop Logo (top-left) */}
+        <div className="hidden md:block absolute left-5 top-1/2 -translate-y-1/2">
+          <img src={logoT} alt="Logo" className="h-10" />
+        </div>
+
         <div className="md:hidden flex flex-col cursor-pointer p-2 absolute left-5 top-1/2 -translate-y-1/2 z-50" onClick={toggleNav}>
           <div className="w-6 h-0.5 bg-white my-1 transition-all duration-400"></div>
           <div className="w-6 h-0.5 bg-white my-1 transition-all duration-400"></div>
@@ -43,6 +54,7 @@ function App() {
         <div className="flex gap-4 absolute right-5 top-1/2 -translate-y-1/2">
           <a href="tel:+447469475250" className="text-white text-2xl no-underline">📞</a>
           <a href="mailto:ajithsuryathati@gmail.com" className="text-white text-2xl no-underline">✉️</a>
+          
         </div>
       </header>
 
