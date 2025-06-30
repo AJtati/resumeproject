@@ -73,13 +73,10 @@ export const siteBuild = {
   },
   githubRepo: {
     title: 'GitHub Repository',
-    text: 'The complete source code for this project is available on GitHub:',
+    text: 'The complete source code for this project is available on',
     link: 'https://github.com/AJtati/resumeproject'
   },
-  deploymentUrl: {
-    title: 'Deployment URL:',
-    link: 'https://AJtati.github.io/resumeproject/'
-  }
+  
 };
 
 export const landingPage = {
