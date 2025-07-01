@@ -22,7 +22,6 @@ jobs:
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           base: develop
-          head: feat1
           title: 'feat: Merge feat1 into develop'
           body: |-
             This pull request merges changes from `feat1` into `develop`.
@@ -48,7 +47,6 @@ jobs:
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           base: master
-          head: develop
           title: 'Merge develop into master'
           body: |-
             This pull request merges changes from `develop` into `master`.
