@@ -1,0 +1,34 @@
+name: CI Checks
+
+on:
+  push:
+    branches:
+      - main # Or master, depending on your primary branch
+      - develop
+      - feat/* # Triggers on any branch starting with 'feat/'
+  pull_request:
+    branches:
+      - main # Or master
+      - develop
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use a Node.js version compatible with your project
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test -- --watchAll=false # --watchAll=false is important for CI environments
+
+      - name: Build project
+        run: npm run build
