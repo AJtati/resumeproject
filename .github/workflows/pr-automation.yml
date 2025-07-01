@@ -10,6 +10,9 @@ jobs:
   create-feat1-to-develop-pr:
     if: github.ref_name == 'feat1'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -35,6 +38,9 @@ jobs:
   create-develop-to-master-pr:
     if: github.ref_name == 'develop'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
