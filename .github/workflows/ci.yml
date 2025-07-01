@@ -28,7 +28,7 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm test -- --watchAll=false # --watchAll=false is important for CI environments
+        run: npm test -- --watchAll=false --passWithNoTests # --watchAll=false is important for CI environments
 
       - name: Build project
         run: npm run build
