@@ -27,8 +27,14 @@ jobs:
           base: develop
           title: 'feat: Merge feat1 into develop'
           body: |-
-            This pull request merges changes from `feat1` into `develop`.
-            Please review and merge manually.
+            This automated Pull Request proposes to merge the feature branch `feat1` into the `develop` branch.
+
+            **Purpose:**
+            - Integrate new features/changes developed in `feat1`.
+            - Prepare for further testing and integration within the `develop` environment.
+
+            **Action Required:**
+            Please review the changes carefully, ensure all checks pass, and then manually merge this Pull Request into `develop`.
           labels: |
             automated-pr
             needs-review
@@ -55,8 +61,14 @@ jobs:
           base: master
           title: 'Merge develop into master'
           body: |-
-            This pull request merges changes from `develop` into `master`.
-            Please review and merge manually.
+            This automated Pull Request proposes to merge the `develop` branch into the `master` branch.
+
+            **Purpose:**
+            - Promote stable and tested features from `develop` to `master`.
+            - Prepare for deployment to production (or a release environment).
+
+            **Action Required:**
+            Please review the changes carefully, ensure all checks pass, and then manually merge this Pull Request into `master`.
           labels: |
             automated-pr
             release
