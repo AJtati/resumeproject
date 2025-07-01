@@ -43,7 +43,7 @@ The project follows a component-based architecture, breaking down the UI into re
     *   Refactored to use Tailwind CSS and Framer Motion.
 
 *   **`src/components/Skills.js`**: 
-    *   A sub-component of `CV.js`...
+    *   A sub-component of `CV.js`.
     *   Lists technical proficiencies and tools.
     *   Refactored to use Tailwind CSS and Framer Motion.
 

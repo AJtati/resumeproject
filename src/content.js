@@ -1,4 +1,4 @@
-import landingPageBackground from './assets/landingpage.jpg';
+
 import aboutMeBackground from './assets/summary-background.jpg';
 import cvBackground from './assets/skills-background.jpg';
 import siteBuildBackground from './assets/education-background.jpg';
@@ -14,6 +14,7 @@ export const aboutMe = {
 };
 
 export const siteBuild = {
+  background: siteBuildBackground,
   title: 'Project Implementation Methods',
   intro: 'This website was developed as a Single-Page Application (SPA) using a <strong>Component-Based Architecture</strong> with React, emphasizing modularity and reusability. The development followed an <strong>Iterative and Agile Methodology</strong>, allowing for continuous refinement and adaptation based on design goals and user feedback.',
   howIbuiltIt: {
