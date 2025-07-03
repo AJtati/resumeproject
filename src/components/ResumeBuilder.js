@@ -1,7 +1,7 @@
-import React, { forwardRef, useState, useEffect } from 'react';
+import React, { forwardRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { jsPDF } from 'jspdf';
-import { Document, Packer, Paragraph, TextRun, UnderlineType, BorderStyle } from 'docx';
+import { Document, Packer, Paragraph, TextRun } from 'docx';
 import { saveAs } from 'file-saver';
 
 const ResumeBuilder = forwardRef((props, ref) => {
