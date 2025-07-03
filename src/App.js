@@ -10,7 +10,7 @@ import BottomNav from './components/BottomNav'; // Import BottomNav
 import landingPageBackground from './assets/landingpage.jpg';
 import logoT from './assets/logo1.png';
 import { jsPDF } from 'jspdf';
-import { Document, Packer, Paragraph, TextRun, UnderlineType, BorderStyle } from 'docx';
+import { Document, Packer, Paragraph, TextRun } from 'docx';
 import { saveAs } from 'file-saver';
 import { summary, experience, skills, education, hero } from './content';
 
@@ -440,7 +440,7 @@ function App() {
           <a href="tel:+447469475250" className="text-white text-2xl no-underline">📞</a>
           <a href="mailto:ajithsuryathati@gmail.com" className="text-white text-2xl no-underline">✉️</a>
           <div className="relative">
-            <a href="#" onClick={toggleDownloadMenu} className="text-white text-2xl no-underline" ref={downloadButtonRef}>⬇️</a>
+            <button onClick={toggleDownloadMenu} className="text-white text-2xl no-underline bg-transparent border-none cursor-pointer" ref={downloadButtonRef}>⬇️</button>
             {isDownloadMenuOpen && (
               <div ref={downloadMenuRef} className="absolute right-0 mt-2 w-48 bg-black bg-opacity-70 rounded-md shadow-lg z-50">
                 <button onClick={() => { handleDownloadPdf(); setIsDownloadMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-700">Download as PDF</button>
