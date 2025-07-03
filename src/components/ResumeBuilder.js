@@ -13,6 +13,9 @@ const ResumeBuilder = forwardRef((props, ref) => {
     presentDesignation: '',
   });
 
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
   const [summary, setSummary] = useState('');
 
   const [experiences, setExperiences] = useState([]);
@@ -24,10 +27,32 @@ const ResumeBuilder = forwardRef((props, ref) => {
 
   
 
-  const handleChangePersonal = (e) => {
+  const handleChangePersonal = async (e) => {
     const { name, value } = e.target;
     setPersonalDetails(prev => ({ ...prev, [name]: value }));
     setIsSaved(false);
+
+    if (name === 'location' && value.length > 2) {
+      try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${value}&format=json&limit=5`);
+        const data = await response.json();
+        setLocationSuggestions(data.map(item => item.display_name));
+        setShowSuggestions(true);
+      } catch (error) {
+        console.error('Error fetching location suggestions:', error);
+        setLocationSuggestions([]);
+        setShowSuggestions(false);
+      }
+    } else if (name === 'location') {
+      setLocationSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSelectSuggestion = (suggestion) => {
+    setPersonalDetails(prev => ({ ...prev, location: suggestion }));
+    setLocationSuggestions([]);
+    setShowSuggestions(false);
   };
 
   const handleChangeSummary = (e) => {
@@ -53,8 +78,8 @@ const ResumeBuilder = forwardRef((props, ref) => {
 
     if (!personalDetails.phoneNumber) {
       newErrors.phoneNumber = 'Phone number is required.';
-    } else if (!/^[0-9+\-() ]+$/.test(personalDetails.phoneNumber)) {
-      newErrors.phoneNumber = 'Please enter a valid phone number.';
+    } else if (!/^\+?[0-9]{10,}$/.test(personalDetails.phoneNumber.replace(/[\s-()]/g, ''))) {
+      newErrors.phoneNumber = 'Please enter a valid phone number with at least 10 digits.';
     }
     
     if (!personalDetails.location) {
@@ -166,9 +191,12 @@ const ResumeBuilder = forwardRef((props, ref) => {
     addSectionTitle('Summary');
     doc.setFont('Arial', 'normal');
     doc.setFontSize(10);
-    const summaryLines = doc.splitTextToSize(summary || '', pageWidth - margin * 2);
-    summaryLines.forEach(line => {
-      yPos = addText(line, margin, yPos, { fontSize: 10 });
+    const summaryItems = (summary || '').split('\n').filter(line => line.trim() !== '').map(line => line.replace(/^[•\s]*/, ''));
+    summaryItems.forEach(item => {
+        const lines = doc.splitTextToSize(`• ${item}`, pageWidth - margin * 2 - 10);
+        lines.forEach(line => {
+            yPos = addText(line, margin + 5, yPos, { fontSize: 10 });
+        });
     });
     yPos += 10;
 
@@ -187,13 +215,12 @@ const ResumeBuilder = forwardRef((props, ref) => {
 
       doc.setFont('Arial', 'normal');
       doc.setFontSize(10);
-      const responsibilitiesLines = doc.splitTextToSize(job.responsibilities || '', pageWidth - margin * 2 - 10);
-      responsibilitiesLines.forEach((line, lineIndex) => {
-        if (lineIndex === 0) {
-          yPos = addText(line, margin + 10, yPos, { fontSize: 10 });
-        } else {
-          yPos = addText(line, margin + 10, yPos, { fontSize: 10 }); // Align subsequent lines with the start of the first line
-        }
+      const responsibilitiesItems = (job.responsibilities || '').split('\n').filter(line => line.trim() !== '').map(line => line.replace(/^[•\s]*/, ''));
+      responsibilitiesItems.forEach(item => {
+          const lines = doc.splitTextToSize(`• ${item}`, pageWidth - margin * 2 - 15);
+          lines.forEach(line => {
+              yPos = addText(line, margin + 10, yPos, { fontSize: 10 });
+          });
       });
       yPos += 10;
       if (index < (experiences || []).length - 1) {
@@ -275,28 +302,43 @@ const ResumeBuilder = forwardRef((props, ref) => {
               },
             },
           },
-          styles: {
-            default: {
-              document: {
-                run: {
-                  font: "Cambria",
-                },
-              },
-            },
-          },
           children: [
             new Paragraph({
-              text: personalDetails.fullName || '[Your Full Name]',
-              heading: 'Title',
+              children: [
+                new TextRun({
+                  text: personalDetails.fullName || '[Your Full Name]',
+                  font: {
+                    name: 'Cambria',
+                  },
+                  size: 56,
+                  bold: true,
+                }),
+              ],
               alignment: 'center',
             }),
             new Paragraph({
-              text: personalDetails.presentDesignation || '[Your Job Title]',
-              heading: 'Subtitle',
+              children: [
+                new TextRun({
+                  text: personalDetails.presentDesignation || '[Your Job Title]',
+                  font: {
+                    name: 'Cambria',
+                  },
+                  size: 32,
+                  bold: true,
+                }),
+              ],
               alignment: 'center',
             }),
             new Paragraph({
-              text: `${personalDetails.location || '[Location]'}   |   ${personalDetails.phoneNumber || '[Phone Number]'}   |   ${personalDetails.email || '[Email]'}`,
+              children: [
+                new TextRun({
+                  text: `${personalDetails.location || '[Location]'}   |   ${personalDetails.phoneNumber || '[Phone Number]'}   |   ${personalDetails.email || '[Email]'}`, 
+                  font: {
+                    name: 'Cambria',
+                  },
+                  size: 20,
+                }),
+              ],
               alignment: 'center',
             }),
             new Paragraph({
@@ -316,19 +358,33 @@ const ResumeBuilder = forwardRef((props, ref) => {
               },
             }),
             new Paragraph({
-              text: 'Summary',
-              heading: 'Heading1',
-            }),
-            new Paragraph({
-              text: summary || '',
-            }),
-            new Paragraph({
               children: [
                 new TextRun({
-                  text: '',
-                  break: 1,
+                  text: 'Summary',
+                  font: {
+                    name: 'Cambria',
+                  },
+                  size: 28,
+                  bold: true,
                 }),
               ],
+            }),
+            ...(summary || '').split('\n').filter(line => line.trim() !== '').map(item =>
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: item.replace(/^[•\s]*/, ''),
+                    font: {
+                      name: 'Cambria',
+                    },
+                    size: 20,
+                  }),
+                ],
+                bullet: { level: 0 },
+              })
+            ),
+            new Paragraph({
+              children: [],
               border: {
                 bottom: {
                   color: "auto",
@@ -339,21 +395,35 @@ const ResumeBuilder = forwardRef((props, ref) => {
               },
             }),
             new Paragraph({
-              text: 'Work Experience',
-              heading: 'Heading1',
-              style: 'Cambria',
+              children: [
+                new TextRun({
+                  text: 'Work Experience',
+                  font: {
+                    name: 'Cambria',
+                  },
+                  size: 28,
+                  bold: true,
+                }),
+              ],
             }),
             ...(experiences || []).flatMap(job => [
               new Paragraph({
                 children: [
                   new TextRun({
                     text: job.jobTitle || '',
+                    font: {
+                      name: 'Cambria',
+                    },
+                    size: 24,
                     bold: true,
                   }),
                   new TextRun({
                     text: `	${job.startDate || ''} - ${job.endDate || ''}`,
+                    font: {
+                      name: 'Cambria',
+                    },
+                    size: 24,
                     bold: true,
-                    style: 'Cambria',
                   }),
                 ],
               }),
@@ -361,29 +431,31 @@ const ResumeBuilder = forwardRef((props, ref) => {
                 children: [
                   new TextRun({
                     text: `${job.companyName || ''}, ${personalDetails.location || ''}`,
+                    font: {
+                      name: 'Cambria',
+                    },
+                    size: 20,
                     bold: true,
-                    style: 'Cambria',
                   }),
                 ],
               }),
-              new Paragraph({
-                text: job.responsibilities || '',
-                bullet: {
-                  level: 0,
-                },
-                run: {
-                  size: 20, // Adjust as needed, 20 is roughly 10pt
-                },
-              }),
+              ...(job.responsibilities || '').split('\n').filter(line => line.trim() !== '').map(item =>
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: item.replace(/^[•\s]*/, ''),
+                      font: {
+                        name: 'Cambria',
+                      },
+                      size: 20,
+                    }),
+                  ],
+                  bullet: { level: 0 },
+                })
+              ),
             ]),
-            new Paragraph({}), // Add space after each job
             new Paragraph({
-              children: [
-                new TextRun({
-                  text: '',
-                  break: 1,
-                }),
-              ],
+              children: [],
               border: {
                 bottom: {
                   color: "auto",
@@ -394,9 +466,16 @@ const ResumeBuilder = forwardRef((props, ref) => {
               },
             }),
             new Paragraph({
-              text: 'Technical Skills',
-              heading: 'Heading1',
-              style: 'Cambria',
+              children: [
+                new TextRun({
+                  text: 'Technical Skills',
+                  font: {
+                    name: 'Cambria',
+                  },
+                  size: 28,
+                  bold: true,
+                }),
+              ],
             }),
             ...Object.entries(
               (skills || []).reduce((acc, skill) => {
@@ -411,23 +490,24 @@ const ResumeBuilder = forwardRef((props, ref) => {
                 children: [
                   new TextRun({
                     text: `${category}: `,
+                    font: {
+                      name: 'Cambria',
+                    },
+                    size: 20,
                     bold: true,
-                    style: 'Cambria',
                   }),
                   new TextRun({
                     text: skills.join(', '),
-                    style: 'Cambria',
+                    font: {
+                      name: 'Cambria',
+                    },
+                    size: 20,
                   }),
                 ],
               }),
             ]),
             new Paragraph({
-              children: [
-                new TextRun({
-                  text: '',
-                  break: 1,
-                }),
-              ],
+              children: [],
               border: {
                 bottom: {
                   color: "auto",
@@ -438,22 +518,35 @@ const ResumeBuilder = forwardRef((props, ref) => {
               },
             }),
             new Paragraph({
-              text: 'Education',
-              heading: 'Heading1',
-              style: 'Cambria',
+              children: [
+                new TextRun({
+                  text: 'Education',
+                  font: {
+                    name: 'Cambria',
+                  },
+                  size: 28,
+                  bold: true,
+                }),
+              ],
             }),
             ...(education || []).flatMap(edu => [
               new Paragraph({
                 children: [
                   new TextRun({
                     text: edu.degree || '',
+                    font: {
+                      name: 'Cambria',
+                    },
+                    size: 24,
                     bold: true,
-                    style: 'Cambria',
                   }),
                   new TextRun({
                     text: `\t${edu.period || ''}`,
+                    font: {
+                      name: 'Cambria',
+                    },
+                    size: 24,
                     bold: true,
-                    style: 'Cambria',
                   }),
                 ],
               }),
@@ -461,8 +554,11 @@ const ResumeBuilder = forwardRef((props, ref) => {
                 children: [
                   new TextRun({
                     text: edu.university || '',
+                    font: {
+                      name: 'Cambria',
+                    },
+                    size: 20,
                     italics: true,
-                    style: 'Cambria',
                   }),
                 ],
               }),
@@ -472,7 +568,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
       ],
     });
 
-    Packer.toBlob(doc).then(blob => {
+  Packer.toBlob(doc).then(blob => {
       saveAs(blob, 'Resume.docx');
     });
   };
@@ -582,7 +678,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
               />
               {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
             </div>
-            <div>
+            <div className="relative">
               <input
                 type="text"
                 name="location"
@@ -592,6 +688,19 @@ const ResumeBuilder = forwardRef((props, ref) => {
                 className="p-3 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-blue-500 w-full"
               />
               {errors.location && <p className="text-red-500 text-sm mt-1">{errors.location}</p>}
+              {showSuggestions && locationSuggestions.length > 0 && (
+                <ul className="absolute z-30 w-full bg-gray-700 border border-gray-600 rounded-b-md max-h-48 overflow-y-auto">
+                  {locationSuggestions.map((suggestion, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleSelectSuggestion(suggestion)}
+                      className="p-2 text-white cursor-pointer hover:bg-gray-600"
+                    >
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
             <div>
               <input
@@ -716,7 +825,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
                 Remove Experience
               </button>
             </motion.div>
-          ))},
+          ))}
           <button
             onClick={handleAddExperience}
             className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300"
