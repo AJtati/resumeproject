@@ -575,20 +575,20 @@ const ResumeBuilder = forwardRef((props, ref) => {
 
   // Handlers for Work Experience
   const handleAddExperience = () => {
-    setExperiences([...experiences, { jobTitle: '', companyName: '', startDate: '', endDate: '', responsibilities: '' }]);
+    setExperiences([...experiences, { id: Date.now(), jobTitle: '', companyName: '', startDate: '', endDate: '', responsibilities: '' }]);
     setIsSaved(false);
   };
 
-  const handleRemoveExperience = (index) => {
-    const newExperiences = experiences.filter((_, i) => i !== index);
+  const handleRemoveExperience = (id) => {
+    const newExperiences = experiences.filter(exp => exp.id !== id);
     setExperiences(newExperiences);
     setIsSaved(false);
   };
 
-  const handleChangeExperience = (index, e) => {
+  const handleChangeExperience = (id, e) => {
     const { name, value } = e.target;
-    const newExperiences = experiences.map((exp, i) => {
-      if (i === index) {
+    const newExperiences = experiences.map((exp) => {
+      if (exp.id === id) {
         return { ...exp, [name]: value };
       }
       return exp;
@@ -599,20 +599,20 @@ const ResumeBuilder = forwardRef((props, ref) => {
 
   // Handlers for Technical Skills
   const handleAddSkill = () => {
-    setSkills([...skills, { category: '', value: '' }]);
+    setSkills([...skills, { id: Date.now(), category: '', value: '' }]);
     setIsSaved(false);
   };
 
-  const handleRemoveSkill = (index) => {
-    const newSkills = skills.filter((_, i) => i !== index);
+  const handleRemoveSkill = (id) => {
+    const newSkills = skills.filter(skill => skill.id !== id);
     setSkills(newSkills);
     setIsSaved(false);
   };
 
-  const handleChangeSkill = (index, e) => {
+  const handleChangeSkill = (id, e) => {
     const { name, value } = e.target;
-    const newSkills = skills.map((skill, i) => {
-      if (i === index) {
+    const newSkills = skills.map((skill) => {
+      if (skill.id === id) {
         return { ...skill, [name]: value };
       }
       return skill;
@@ -623,20 +623,20 @@ const ResumeBuilder = forwardRef((props, ref) => {
 
   // Handlers for Education
   const handleAddEducation = () => {
-    setEducation([...education, { degree: '', university: '', period: '' }]);
+    setEducation([...education, { id: Date.now(), degree: '', university: '', period: '' }]);
     setIsSaved(false);
   };
 
-  const handleRemoveEducation = (index) => {
-    const newEducation = education.filter((_, i) => i !== index);
+  const handleRemoveEducation = (id) => {
+    const newEducation = education.filter(edu => edu.id !== id);
     setEducation(newEducation);
     setIsSaved(false);
   };
 
-  const handleChangeEducation = (index, e) => {
+  const handleChangeEducation = (id, e) => {
     const { name, value } = e.target;
-    const newEducation = education.map((edu, i) => {
-      if (i === index) {
+    const newEducation = education.map((edu) => {
+      if (edu.id === id) {
         return { ...edu, [name]: value };
       }
       return edu;
@@ -756,7 +756,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
           <h3 className="text-2xl font-semibold mb-4">Work Experience</h3>
           {experiences.map((exp, index) => (
             <motion.div
-              key={index}
+              key={exp.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -770,7 +770,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
                     name="jobTitle"
                     placeholder="Job Title"
                     value={exp.jobTitle}
-                    onChange={(e) => handleChangeExperience(index, e)}
+                    onChange={(e) => handleChangeExperience(exp.id, e)}
                     className="p-3 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500 w-full"
                   />
                   {errors[`experience-${index}-jobTitle`] && <p className="text-red-500 text-sm mt-1">{errors[`experience-${index}-jobTitle`]}</p>}
@@ -781,7 +781,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
                     name="companyName"
                     placeholder="Company Name"
                     value={exp.companyName}
-                    onChange={(e) => handleChangeExperience(index, e)}
+                    onChange={(e) => handleChangeExperience(exp.id, e)}
                     className="p-3 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500 w-full"
                   />
                   {errors[`experience-${index}-companyName`] && <p className="text-red-500 text-sm mt-1">{errors[`experience-${index}-companyName`]}</p>}
@@ -792,7 +792,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
                     name="startDate"
                     placeholder="Start Date (e.g., Jan 2020)"
                     value={exp.startDate}
-                    onChange={(e) => handleChangeExperience(index, e)}
+                    onChange={(e) => handleChangeExperience(exp.id, e)}
                     className="p-3 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500 w-full"
                   />
                   {errors[`experience-${index}-startDate`] && <p className="text-red-500 text-sm mt-1">{errors[`experience-${index}-startDate`]}</p>}
@@ -803,7 +803,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
                     name="endDate"
                     placeholder="End Date (e.g., Dec 2023 or Present)"
                     value={exp.endDate}
-                    onChange={(e) => handleChangeExperience(index, e)}
+                    onChange={(e) => handleChangeExperience(exp.id, e)}
                     className="p-3 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500 w-full"
                   />
                   {errors[`experience-${index}-endDate`] && <p className="text-red-500 text-sm mt-1">{errors[`experience-${index}-endDate`]}</p>}
@@ -813,13 +813,13 @@ const ResumeBuilder = forwardRef((props, ref) => {
                 name="responsibilities"
                 placeholder="Responsibilities/Achievements (one per line)"
                 value={exp.responsibilities}
-                onChange={(e) => handleChangeExperience(index, e)}
+                onChange={(e) => handleChangeExperience(exp.id, e)}
                 rows="5"
                 className="w-full p-3 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500"
               ></textarea>
               {errors[`experience-${index}-responsibilities`] && <p className="text-red-500 text-sm mt-1">{errors[`experience-${index}-responsibilities`]}</p>}
               <button
-                onClick={() => handleRemoveExperience(index)}
+                onClick={() => handleRemoveExperience(exp.id)}
                 className="mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300"
               >
                 Remove Experience
@@ -839,7 +839,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
           <h3 className="text-2xl font-semibold mb-4">Technical Skills</h3>
           {skills.map((skill, index) => (
             <motion.div
-              key={index}
+              key={skill.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -853,7 +853,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
                     name="category"
                     placeholder="Skill Category (e.g., CI/CD)"
                     value={skill.category}
-                    onChange={(e) => handleChangeSkill(index, e)}
+                    onChange={(e) => handleChangeSkill(skill.id, e)}
                     className="p-3 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500 w-full"
                   />
                   {errors[`skill-${index}-category`] && <p className="text-red-500 text-sm mt-1">{errors[`skill-${index}-category`]}</p>}
@@ -864,14 +864,14 @@ const ResumeBuilder = forwardRef((props, ref) => {
                     name="value"
                     placeholder="Skill Value (e.g., Jenkins, GitLab)"
                     value={skill.value}
-                    onChange={(e) => handleChangeSkill(index, e)}
+                    onChange={(e) => handleChangeSkill(skill.id, e)}
                     className="p-3 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500 w-full"
                   />
                   {errors[`skill-${index}-value`] && <p className="text-red-500 text-sm mt-1">{errors[`skill-${index}-value`]}</p>}
                 </div>
               </div>
               <button
-                onClick={() => handleRemoveSkill(index)}
+                onClick={() => handleRemoveSkill(skill.id)}
                 className="mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300"
               >
                 Remove Skill
@@ -891,7 +891,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
           <h3 className="text-2xl font-semibold mb-4">Education</h3>
           {education.map((edu, index) => (
             <motion.div
-              key={index}
+              key={edu.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -905,7 +905,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
                     name="degree"
                     placeholder="Degree (e.g., Master of Science)"
                     value={edu.degree}
-                    onChange={(e) => handleChangeEducation(index, e)}
+                    onChange={(e) => handleChangeEducation(edu.id, e)}
                     className="p-3 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500 w-full"
                   />
                   {errors[`education-${index}-degree`] && <p className="text-red-500 text-sm mt-1">{errors[`education-${index}-degree`]}</p>}
@@ -916,7 +916,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
                     name="university"
                     placeholder="University Name"
                     value={edu.university}
-                    onChange={(e) => handleChangeEducation(index, e)}
+                    onChange={(e) => handleChangeEducation(edu.id, e)}
                     className="p-3 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500 w-full"
                   />
                   {errors[`education-${index}-university`] && <p className="text-red-500 text-sm mt-1">{errors[`education-${index}-university`]}</p>}
@@ -927,14 +927,14 @@ const ResumeBuilder = forwardRef((props, ref) => {
                     name="period"
                     placeholder="Period (e.g., Jan 2021 - Jan 2023)"
                     value={edu.period}
-                    onChange={(e) => handleChangeEducation(index, e)}
+                    onChange={(e) => handleChangeEducation(edu.id, e)}
                     className="p-3 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500 w-full"
                   />
                   {errors[`education-${index}-period`] && <p className="text-red-500 text-sm mt-1">{errors[`education-${index}-period`]}</p>}
                 </div>
               </div>
               <button
-                onClick={() => handleRemoveEducation(index)}
+                onClick={() => handleRemoveEducation(edu.id)}
                 className="mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300"
               >
                 Remove Education
