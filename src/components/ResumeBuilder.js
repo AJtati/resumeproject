@@ -950,7 +950,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
         </div>
 
         {/* Save and Download Buttons */}
-        <div className="flex justify-center gap-4 mt-8">
+        <div className="flex flex-wrap justify-center gap-4 mt-8 px-4">
           <button
             onClick={handleSave}
             className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded transition duration-300"
