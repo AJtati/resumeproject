@@ -2,6 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { bottomNav } from '../content';
+import { FaFileAlt } from 'react-icons/fa';
+
+const iconMap = {
+  'FaFileAlt': <FaFileAlt />,
+};
 
 const BottomNav = () => {
   return (
@@ -18,7 +23,7 @@ const BottomNav = () => {
           whileTap={{ scale: 0.9 }}
         >
           <Link to={item.to} className="flex flex-col items-center justify-center flex-grow no-underline text-white font-bold">
-            <span className="text-3xl">{item.icon}</span>
+            <span className="text-3xl">{iconMap[item.icon] || item.icon}</span>
             <span className="text-sm mt-1">{item.text}</span>
           </Link>
         </motion.div>
