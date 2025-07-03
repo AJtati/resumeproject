@@ -246,5 +246,6 @@ export const bottomNav = [
   { to: '/', icon: '🏠', text: 'Home' },
   { to: '/about', icon: '👤', text: 'About' },
   { to: '/cv', icon: '📄', text: 'CV' },
+  { to: '/build-resume', icon: 'FaFileAlt', text: 'Builder' },
   { to: '/site-build', icon: '🛠️', text: 'Site Build' }
 ];
