@@ -4,7 +4,7 @@ import { jsPDF } from 'jspdf';
 import { Document, Packer, Paragraph, TextRun, UnderlineType, BorderStyle } from 'docx';
 import { saveAs } from 'file-saver';
 
-const ResumeBuilder = forwardRef((props, ref) => {
+const ResumeBuilderComponent = (props, ref) => {
   const [personalDetails, setPersonalDetails] = useState({
     fullName: '',
     location: '',
@@ -13,57 +13,28 @@ const ResumeBuilder = forwardRef((props, ref) => {
     presentDesignation: '',
   });
 
-  const [locationSuggestions, setLocationSuggestions] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-
   const [summary, setSummary] = useState('');
-
   const [experiences, setExperiences] = useState([]);
   const [skills, setSkills] = useState([]);
   const [education, setEducation] = useState([]);
-
   const [isSaved, setIsSaved] = useState(false);
   const [errors, setErrors] = useState({});
 
-  
-
-  const handleChangePersonal = async (e) => {
+  const handleChangePersonal = (e) => {
     const { name, value } = e.target;
     setPersonalDetails(prev => ({ ...prev, [name]: value }));
     setIsSaved(false);
-
-    if (name === 'location' && value.length > 2) {
-      try {
-        const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${value}&format=json&limit=5`);
-        const data = await response.json();
-        setLocationSuggestions(data.map(item => item.display_name));
-        setShowSuggestions(true);
-      } catch (error) {
-        console.error('Error fetching location suggestions:', error);
-        setLocationSuggestions([]);
-        setShowSuggestions(false);
-      }
-    } else if (name === 'location') {
-      setLocationSuggestions([]);
-      setShowSuggestions(false);
-    }
-  };
-
-  const handleSelectSuggestion = (suggestion) => {
-    setPersonalDetails(prev => ({ ...prev, location: suggestion }));
-    setLocationSuggestions([]);
-    setShowSuggestions(false);
   };
 
   const handleChangeSummary = (e) => {
-    setSummary(e.target.value);
+    const cleanedValue = e.target.value.replace(/^[\s\t]*[\u2022\u2023\u25B6\u25C0\u25CF\u2013\u2014\-](?:\s+)?/gm, '');
+    setSummary(cleanedValue);
     setIsSaved(false);
   };
 
   const validate = () => {
     const newErrors = {};
 
-    // Personal Details Validation
     if (!personalDetails.fullName) {
       newErrors.fullName = 'Full name is required.';
     } else if (!/^[a-zA-Z\s]+$/.test(personalDetails.fullName)) {
@@ -81,35 +52,25 @@ const ResumeBuilder = forwardRef((props, ref) => {
     } else if (!/^\+?[0-9]{10,}$/.test(personalDetails.phoneNumber.replace(/[\s-()]/g, ''))) {
       newErrors.phoneNumber = 'Please enter a valid phone number with at least 10 digits.';
     }
-    
-    if (!personalDetails.location) {
-      newErrors.location = 'Location is required.';
-    }
 
-    if (!personalDetails.presentDesignation) {
-      newErrors.presentDesignation = 'Present Designation is required.';
-    }
+    if (!personalDetails.location) newErrors.location = 'Location is required.';
+    if (!personalDetails.presentDesignation) newErrors.presentDesignation = 'Present Designation is required.';
+    if (!summary) newErrors.summary = 'Summary is required.';
 
-    if (!summary) {
-      newErrors.summary = 'Summary is required.';
-    }
-
-    // Experience Validation
     experiences.forEach((exp, index) => {
       if (!exp.jobTitle) newErrors[`experience-${index}-jobTitle`] = 'Job title is required.';
       if (!exp.companyName) newErrors[`experience-${index}-companyName`] = 'Company name is required.';
       if (!exp.startDate) newErrors[`experience-${index}-startDate`] = 'Start date is required.';
       if (!exp.endDate) newErrors[`experience-${index}-endDate`] = 'End date is required.';
       if (!exp.responsibilities) newErrors[`experience-${index}-responsibilities`] = 'Responsibilities are required.';
+      if (!exp.location) newErrors[`experience-${index}-location`] = 'Location is required.';
     });
 
-    // Skills Validation
     skills.forEach((skill, index) => {
       if (!skill.category) newErrors[`skill-${index}-category`] = 'Skill category is required.';
       if (!skill.value) newErrors[`skill-${index}-value`] = 'Skill value is required.';
     });
 
-    // Education Validation
     education.forEach((edu, index) => {
       if (!edu.degree) newErrors[`education-${index}-degree`] = 'Degree is required.';
       if (!edu.university) newErrors[`education-${index}-university`] = 'University is required.';
@@ -138,7 +99,6 @@ const ResumeBuilder = forwardRef((props, ref) => {
     const pageHeight = doc.internal.pageSize.getHeight();
     let yPos = margin;
 
-    // Helper function to add text and manage y position with page breaks
     const addText = (text, x, y, options = {}) => {
       const lineHeight = (options.fontSize || 10) * 1.2;
       if (y + lineHeight > pageHeight - margin) {
@@ -149,10 +109,9 @@ const ResumeBuilder = forwardRef((props, ref) => {
       return y + lineHeight;
     };
 
-    // Helper for section titles
     const addSectionTitle = (title) => {
       yPos += 15;
-      if (yPos + 20 > pageHeight - margin) { // Check if title fits on current page
+      if (yPos + 20 > pageHeight - margin) {
         doc.addPage();
         yPos = margin;
       }
@@ -160,69 +119,80 @@ const ResumeBuilder = forwardRef((props, ref) => {
       doc.setFontSize(14);
       yPos = addText(title, margin, yPos);
       doc.setDrawColor(200, 200, 200);
-      doc.line(margin, yPos - 5, pageWidth - margin, yPos - 5); // Thin line below title
-      yPos += 10;
+      doc.line(margin, yPos - 5, pageWidth - margin, yPos - 5);
+      yPos += 20;
     };
 
-    // --- Header ---
     doc.setFont('Arial', 'bold');
     doc.setFontSize(28);
     doc.text(personalDetails.fullName || '[Your Full Name]', pageWidth / 2, yPos, { align: 'center' });
     yPos += 20;
 
     doc.setFont('Arial', 'bold');
-    doc.setFontSize(16);
+    doc.setFontSize(18);
     doc.text(personalDetails.presentDesignation || '[Your Job Title]', pageWidth / 2, yPos, { align: 'center' });
     yPos += 30;
 
-    // --- Contact Info ---
     doc.setDrawColor(200, 200, 200);
     doc.line(margin, yPos, pageWidth - margin, yPos);
     yPos += 15;
     doc.setFontSize(10);
     doc.setFont('Arial', 'normal');
-    const contactInfo = `${personalDetails.location || '[Location]'}   |   ${personalDetails.phoneNumber || '[Phone Number]'}   |   ${personalDetails.email || '[Email]'}`;
+    const contactInfo = `${personalDetails.location || '[Location]'} | ${personalDetails.phoneNumber || '[Phone Number]'} | ${personalDetails.email || '[Email]'}`;
     doc.text(contactInfo, pageWidth / 2, yPos, { align: 'center' });
     yPos += 15;
     doc.line(margin, yPos, pageWidth - margin, yPos);
     yPos += 20;
 
-    // --- Summary ---
     addSectionTitle('Summary');
     doc.setFont('Arial', 'normal');
     doc.setFontSize(10);
-    const summaryItems = (summary || '').split('\n').filter(line => line.trim() !== '').map(line => line.replace(/^[•\s]*/, ''));
-    summaryItems.forEach(item => {
+    const summaryLines = (summary || '').split('\n').filter(line => line.trim() !== '');
+    if (summaryLines.length <= 1) {
+      const lines = doc.splitTextToSize(summaryLines[0] || '', pageWidth - margin * 2);
+      lines.forEach(line => {
+        yPos = addText(line, margin, yPos, { fontSize: 10 });
+      });
+    } else {
+      summaryLines.forEach(item => {
         const lines = doc.splitTextToSize(`• ${item}`, pageWidth - margin * 2 - 10);
         lines.forEach(line => {
-            yPos = addText(line, margin + 5, yPos, { fontSize: 10 });
+          yPos = addText(line, margin + 5, yPos, { fontSize: 10 });
         });
-    });
+      });
+    }
     yPos += 10;
 
-    // --- Work Experience ---
     addSectionTitle('Work Experience');
     (experiences || []).forEach((job, index) => {
       doc.setFont('Arial', 'bold');
       doc.setFontSize(12);
-      yPos = addText(job.jobTitle || '', margin, yPos); // Role Title
+      const jobTitleY = yPos;
+      addText(job.jobTitle || '', margin, yPos);
+
       doc.setFont('Arial', 'normal');
-      doc.text(`${job.startDate || ''} - ${job.endDate || ''}`, pageWidth - margin, yPos - 12, { align: 'right' }); // Dates worked
+      doc.setFontSize(11);
+      const periodText = `${job.startDate || ''} - ${job.endDate || ''}`;
+      const periodWidth = doc.getTextWidth(periodText);
+      doc.text(periodText, pageWidth - margin - periodWidth, jobTitleY);
+      yPos = jobTitleY + 15;
 
       doc.setFont('Arial', 'bold');
-      doc.setFontSize(10);
-      yPos = addText(`${job.companyName || ''}, ${personalDetails.location || ''}`, margin, yPos); // Company and Location
+      doc.setFontSize(11);
+      yPos = addText(`${job.companyName || ''}${job.location && job.location.trim() ? ', ' + job.location : ''}`, margin, yPos);
+      doc.setFont('Arial', 'normal');
+      yPos += 10;
 
       doc.setFont('Arial', 'normal');
       doc.setFontSize(10);
       const responsibilitiesItems = (job.responsibilities || '').split('\n').filter(line => line.trim() !== '').map(line => line.replace(/^[•\s]*/, ''));
       responsibilitiesItems.forEach(item => {
-          const lines = doc.splitTextToSize(`• ${item}`, pageWidth - margin * 2 - 15);
-          lines.forEach(line => {
-              yPos = addText(line, margin + 10, yPos, { fontSize: 10 });
-          });
+        const lines = doc.splitTextToSize(`• ${item}`, pageWidth - margin * 2 - 15);
+        lines.forEach(line => {
+          yPos = addText(line, margin + 10, yPos, { fontSize: 10 });
+        });
       });
-      yPos += 10;
+      yPos += 15;
       if (index < (experiences || []).length - 1) {
         doc.setDrawColor(200, 200, 200);
         doc.line(margin, yPos, pageWidth - margin, yPos);
@@ -230,14 +200,9 @@ const ResumeBuilder = forwardRef((props, ref) => {
       }
     });
 
-    
-
-    
-    // --- Technical Skills ---
     addSectionTitle('Technical Skills');
     doc.setFont('Arial', 'normal');
     doc.setFontSize(10);
-    console.log('Skills data for PDF:', skills);
     const skillsByCategory = (skills || []).reduce((acc, skill) => {
       if (!acc[skill.category]) {
         acc[skill.category] = [];
@@ -249,36 +214,29 @@ const ResumeBuilder = forwardRef((props, ref) => {
     Object.keys(skillsByCategory).forEach(category => {
       doc.setFont('Arial', 'bold');
       doc.text(`${category}:`, margin, yPos);
-
       const startXForSkills = margin + doc.getTextWidth(`${category}: `);
-
       doc.setFont('Arial', 'normal');
       const skillValues = skillsByCategory[category].join(', ');
       const availableWidthForSkills = pageWidth - startXForSkills - margin;
-
       const skillLines = doc.splitTextToSize(skillValues, availableWidthForSkills);
-
       let currentLineY = yPos;
-
       skillLines.forEach(line => {
         doc.text(line, startXForSkills, currentLineY);
         currentLineY += 12;
       });
-
       yPos = currentLineY;
       yPos += 5;
     });
-    
 
-    // --- Education ---
     addSectionTitle('Education');
     (education || []).forEach(edu => {
       doc.setFont('Arial', 'bold');
       doc.setFontSize(12);
       yPos = addText(edu.degree || '', margin, yPos);
-      doc.setFont('Arial', 'normal');
+      doc.setFont('Arial', 'bold');
+      doc.setFontSize(11);
       doc.text(edu.period || '', pageWidth - margin, yPos - 12, { align: 'right' });
-
+      doc.setFont('Arial', 'normal');
       doc.setFont('Arial', 'italic');
       doc.setFontSize(10);
       yPos = addText(edu.university || '', margin, yPos);
@@ -290,358 +248,164 @@ const ResumeBuilder = forwardRef((props, ref) => {
 
   const handleDownloadWord = () => {
     const doc = new Document({
-      sections: [
-        {
-          properties: {
-            page: {
-              margin: {
-                top: 720, // 0.5 inch in twips (1/1440 of an inch)
-                right: 720,
-                bottom: 720,
-                left: 720,
-              },
-            },
+      sections: [{
+        properties: {
+          page: {
+            margin: { top: 720, right: 720, bottom: 720, left: 720 },
           },
-          children: [
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: personalDetails.fullName || '[Your Full Name]',
-                  font: {
-                    name: 'Cambria',
-                  },
-                  size: 56,
-                  bold: true,
-                }),
-              ],
-              alignment: 'center',
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: personalDetails.presentDesignation || '[Your Job Title]',
-                  font: {
-                    name: 'Cambria',
-                  },
-                  size: 32,
-                  bold: true,
-                }),
-              ],
-              alignment: 'center',
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: `${personalDetails.location || '[Location]'}   |   ${personalDetails.phoneNumber || '[Phone Number]'}   |   ${personalDetails.email || '[Email]'}`, 
-                  font: {
-                    name: 'Cambria',
-                  },
-                  size: 20,
-                }),
-              ],
-              alignment: 'center',
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: '',
-                  break: 1,
-                }),
-              ],
-              border: {
-                bottom: {
-                  color: "auto",
-                  space: 10,
-                  value: "single",
-                  size: 12,
-                },
-              },
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: 'Summary',
-                  font: {
-                    name: 'Cambria',
-                  },
-                  size: 28,
-                  bold: true,
-                }),
-              ],
-            }),
-            ...(summary || '').split('\n').filter(line => line.trim() !== '').map(item =>
+        },
+        children: [
+          new Paragraph({
+            children: [new TextRun({ text: personalDetails.fullName || '[Your Full Name]', font: { name: 'Cambria' }, size: 56, bold: true })],
+            alignment: 'center',
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: personalDetails.presentDesignation || '[Your Job Title]', font: { name: 'Cambria' }, size: 36, bold: true })],
+            alignment: 'center',
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: `${personalDetails.location || '[Location]'} | ${personalDetails.phoneNumber || '[Phone Number]'} | ${personalDetails.email || '[Email]'}`, font: { name: 'Cambria' }, size: 20 })],
+            alignment: 'center',
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: '', break: 1 })],
+            border: { bottom: { color: "auto", space: 10, value: "single", size: 12 } },
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: 'Summary', font: { name: 'Cambria' }, size: 28, bold: true })],
+            spacing: { after: 240 },
+          }),
+          ...((summary || '').split('\n').filter(line => line.trim() !== '').length <= 1 ?
+            [new Paragraph({ children: [new TextRun({ text: (summary || '').replace(/^[•\s]*/, ''), font: { name: 'Cambria' }, size: 20 })] })] :
+            (summary || '').split('\n').filter(line => line.trim() !== '').map(item =>
               new Paragraph({
-                children: [
-                  new TextRun({
-                    text: item.replace(/^[•\s]*/, ''),
-                    font: {
-                      name: 'Cambria',
-                    },
-                    size: 20,
-                  }),
-                ],
+                children: [new TextRun({ text: item.replace(/^[•\s]*/, ''), font: { name: 'Cambria' }, size: 20 })],
                 bullet: { level: 0 },
               })
+            )),
+          new Paragraph({
+            children: [],
+            border: { bottom: { color: "auto", space: 10, value: "single", size: 12 } },
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: 'Work Experience', font: { name: 'Cambria' }, size: 28, bold: true })],
+            spacing: { after: 240 },
+          }),
+          ...(experiences || []).flatMap(job => [
+            new Paragraph({
+              children: [
+                new TextRun({ text: job.jobTitle || '', font: { name: 'Cambria' }, size: 24, bold: true }),
+                new TextRun({ text: `	${job.startDate || ''} - ${job.endDate || ''}`, font: { name: 'Cambria' }, size: 23, bold: true }),
+              ],
+            }),
+            new Paragraph({
+              children: [new TextRun({ text: `${job.companyName || ''}${job.location && job.location.trim() ? ', ' + job.location : ''}`, font: { name: 'Cambria' }, size: 23, bold: true })],
+              spacing: { after: 120 },
+            }),
+            ...(job.responsibilities || '').split('\n').filter(line => line.trim() !== '').map(item =>
+              new Paragraph({
+                children: [new TextRun({ text: item.replace(/^[•\s]*/, ''), font: { name: 'Cambria' }, size: 20 })],
+                bullet: { level: 0 },
+                spacing: { after: 60 },
+              })
             ),
-            new Paragraph({
-              children: [],
-              border: {
-                bottom: {
-                  color: "auto",
-                  space: 10,
-                  value: "single",
-                  size: 12,
-                },
-              },
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: 'Work Experience',
-                  font: {
-                    name: 'Cambria',
-                  },
-                  size: 28,
-                  bold: true,
-                }),
-              ],
-            }),
-            ...(experiences || []).flatMap(job => [
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: job.jobTitle || '',
-                    font: {
-                      name: 'Cambria',
-                    },
-                    size: 24,
-                    bold: true,
-                  }),
-                  new TextRun({
-                    text: `	${job.startDate || ''} - ${job.endDate || ''}`,
-                    font: {
-                      name: 'Cambria',
-                    },
-                    size: 24,
-                    bold: true,
-                  }),
-                ],
-              }),
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `${job.companyName || ''}, ${personalDetails.location || ''}`,
-                    font: {
-                      name: 'Cambria',
-                    },
-                    size: 20,
-                    bold: true,
-                  }),
-                ],
-              }),
-              ...(job.responsibilities || '').split('\n').filter(line => line.trim() !== '').map(item =>
-                new Paragraph({
-                  children: [
-                    new TextRun({
-                      text: item.replace(/^[•\s]*/, ''),
-                      font: {
-                        name: 'Cambria',
-                      },
-                      size: 20,
-                    }),
-                  ],
-                  bullet: { level: 0 },
-                })
-              ),
-            ]),
-            new Paragraph({
-              children: [],
-              border: {
-                bottom: {
-                  color: "auto",
-                  space: 10,
-                  value: "single",
-                  size: 12,
-                },
-              },
-            }),
+          ]),
+          new Paragraph({
+            children: [],
+            border: { bottom: { color: "auto", space: 10, value: "single", size: 12 } },
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: 'Technical Skills', font: { name: 'Cambria' }, size: 28, bold: true })],
+            spacing: { after: 240 },
+          }),
+          ...Object.entries(
+            (skills || []).reduce((acc, skill) => {
+              if (!acc[skill.category]) acc[skill.category] = [];
+              acc[skill.category].push(skill.value);
+              return acc;
+            }, {})
+          ).flatMap(([category, skills]) => [
             new Paragraph({
               children: [
-                new TextRun({
-                  text: 'Technical Skills',
-                  font: {
-                    name: 'Cambria',
-                  },
-                  size: 28,
-                  bold: true,
-                }),
+                new TextRun({ text: `${category}: `, font: { name: 'Cambria' }, size: 20, bold: true }),
+                new TextRun({ text: skills.join(', '), font: { name: 'Cambria' }, size: 20 }),
               ],
             }),
-            ...Object.entries(
-              (skills || []).reduce((acc, skill) => {
-                if (!acc[skill.category]) {
-                  acc[skill.category] = [];
-                }
-                acc[skill.category].push(skill.value);
-                return acc;
-              }, {})
-            ).flatMap(([category, skills]) => [
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: `${category}: `,
-                    font: {
-                      name: 'Cambria',
-                    },
-                    size: 20,
-                    bold: true,
-                  }),
-                  new TextRun({
-                    text: skills.join(', '),
-                    font: {
-                      name: 'Cambria',
-                    },
-                    size: 20,
-                  }),
-                ],
-              }),
-            ]),
-            new Paragraph({
-              children: [],
-              border: {
-                bottom: {
-                  color: "auto",
-                  space: 10,
-                  value: "single",
-                  size: 12,
-                },
-              },
-            }),
+          ]),
+          new Paragraph({
+            children: [],
+            border: { bottom: { color: "auto", space: 10, value: "single", size: 12 } },
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: 'Education', font: { name: 'Cambria' }, size: 28, bold: true })],
+            spacing: { after: 240 },
+          }),
+          ...(education || []).flatMap(edu => [
             new Paragraph({
               children: [
-                new TextRun({
-                  text: 'Education',
-                  font: {
-                    name: 'Cambria',
-                  },
-                  size: 28,
-                  bold: true,
-                }),
+                new TextRun({ text: edu.degree || '', font: { name: 'Cambria' }, size: 24, bold: true }),
+                new TextRun({ text: `\t${edu.period || ''}`, font: { name: 'Cambria' }, size: 23, bold: true }),
               ],
             }),
-            ...(education || []).flatMap(edu => [
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: edu.degree || '',
-                    font: {
-                      name: 'Cambria',
-                    },
-                    size: 24,
-                    bold: true,
-                  }),
-                  new TextRun({
-                    text: `\t${edu.period || ''}`,
-                    font: {
-                      name: 'Cambria',
-                    },
-                    size: 24,
-                    bold: true,
-                  }),
-                ],
-              }),
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: edu.university || '',
-                    font: {
-                      name: 'Cambria',
-                    },
-                    size: 20,
-                    italics: true,
-                  }),
-                ],
-              }),
-            ]),
-          ],
-        },
-      ],
+            new Paragraph({
+              children: [new TextRun({ text: edu.university || '', font: { name: 'Cambria' }, size: 20, italics: true })],
+            }),
+          ]),
+        ],
+      }],
     });
 
-  Packer.toBlob(doc).then(blob => {
+    Packer.toBlob(doc).then(blob => {
       saveAs(blob, 'Resume.docx');
     });
   };
 
-  // Handlers for Work Experience
   const handleAddExperience = () => {
-    setExperiences([...experiences, { id: Date.now(), jobTitle: '', companyName: '', startDate: '', endDate: '', responsibilities: '' }]);
+    setExperiences([...experiences, { id: Date.now(), jobTitle: '', companyName: '', location: '', startDate: '', endDate: '', responsibilities: '' }]);
     setIsSaved(false);
   };
 
   const handleRemoveExperience = (id) => {
-    const newExperiences = experiences.filter(exp => exp.id !== id);
-    setExperiences(newExperiences);
+    setExperiences(experiences.filter(exp => exp.id !== id));
     setIsSaved(false);
   };
 
   const handleChangeExperience = (id, e) => {
     const { name, value } = e.target;
-    const newExperiences = experiences.map((exp) => {
-      if (exp.id === id) {
-        return { ...exp, [name]: value };
-      }
-      return exp;
-    });
-    setExperiences(newExperiences);
+    const cleanedValue = name === 'responsibilities' ? value.replace(/^[\s\t]*[\u2022\u2023\u25B6\u25C0\u25CF\u2013\u2014\-](?:\s+)?/gm, '') : value;
+    setExperiences(experiences.map(exp => (exp.id === id ? { ...exp, [name]: cleanedValue } : exp)));
     setIsSaved(false);
   };
 
-  // Handlers for Technical Skills
   const handleAddSkill = () => {
     setSkills([...skills, { id: Date.now(), category: '', value: '' }]);
     setIsSaved(false);
   };
 
   const handleRemoveSkill = (id) => {
-    const newSkills = skills.filter(skill => skill.id !== id);
-    setSkills(newSkills);
+    setSkills(skills.filter(skill => skill.id !== id));
     setIsSaved(false);
   };
 
   const handleChangeSkill = (id, e) => {
     const { name, value } = e.target;
-    const newSkills = skills.map((skill) => {
-      if (skill.id === id) {
-        return { ...skill, [name]: value };
-      }
-      return skill;
-    });
-    setSkills(newSkills);
+    setSkills(skills.map(skill => (skill.id === id ? { ...skill, [name]: value } : skill)));
     setIsSaved(false);
   };
 
-  // Handlers for Education
   const handleAddEducation = () => {
     setEducation([...education, { id: Date.now(), degree: '', university: '', period: '' }]);
     setIsSaved(false);
   };
 
   const handleRemoveEducation = (id) => {
-    const newEducation = education.filter(edu => edu.id !== id);
-    setEducation(newEducation);
+    setEducation(education.filter(edu => edu.id !== id));
     setIsSaved(false);
   };
 
   const handleChangeEducation = (id, e) => {
     const { name, value } = e.target;
-    const newEducation = education.map((edu) => {
-      if (edu.id === id) {
-        return { ...edu, [name]: value };
-      }
-      return edu;
-    });
-    setEducation(newEducation);
+    setEducation(education.map(edu => (edu.id === id ? { ...edu, [name]: value } : edu)));
     setIsSaved(false);
   };
 
@@ -663,7 +427,6 @@ const ResumeBuilder = forwardRef((props, ref) => {
       >
         <h2 className="text-3xl font-bold mb-6 border-b border-gray-700 pb-2">Build Your Resume</h2>
 
-        {/* Personal Details */}
         <div className="mb-8">
           <h3 className="text-2xl font-semibold mb-4">Personal Details</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -688,19 +451,6 @@ const ResumeBuilder = forwardRef((props, ref) => {
                 className="p-3 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-blue-500 w-full"
               />
               {errors.location && <p className="text-red-500 text-sm mt-1">{errors.location}</p>}
-              {showSuggestions && locationSuggestions.length > 0 && (
-                <ul className="absolute z-30 w-full bg-gray-700 border border-gray-600 rounded-b-md max-h-48 overflow-y-auto">
-                  {locationSuggestions.map((suggestion, index) => (
-                    <li
-                      key={index}
-                      onClick={() => handleSelectSuggestion(suggestion)}
-                      className="p-2 text-white cursor-pointer hover:bg-gray-600"
-                    >
-                      {suggestion}
-                    </li>
-                  ))}
-                </ul>
-              )}
             </div>
             <div>
               <input
@@ -738,7 +488,6 @@ const ResumeBuilder = forwardRef((props, ref) => {
           </div>
         </div>
 
-        {/* Summary */}
         <div className="mb-8">
           <h3 className="text-2xl font-semibold mb-4">Summary</h3>
           <textarea
@@ -751,7 +500,6 @@ const ResumeBuilder = forwardRef((props, ref) => {
           {errors.summary && <p className="text-red-500 text-sm mt-1">{errors.summary}</p>}
         </div>
 
-        {/* Work Experience */}
         <div className="mb-8">
           <h3 className="text-2xl font-semibold mb-4">Work Experience</h3>
           {experiences.map((exp, index) => (
@@ -763,7 +511,7 @@ const ResumeBuilder = forwardRef((props, ref) => {
               transition={{ duration: 0.3 }}
               className="bg-gray-800 p-6 rounded-lg mb-4"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
                 <div>
                   <input
                     type="text"
@@ -785,6 +533,17 @@ const ResumeBuilder = forwardRef((props, ref) => {
                     className="p-3 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500 w-full"
                   />
                   {errors[`experience-${index}-companyName`] && <p className="text-red-500 text-sm mt-1">{errors[`experience-${index}-companyName`]}</p>}
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    name="location"
+                    placeholder="Location"
+                    value={exp.location}
+                    onChange={(e) => handleChangeExperience(exp.id, e)}
+                    className="p-3 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500 w-full"
+                  />
+                  {errors[`experience-${index}-location`] && <p className="text-red-500 text-sm mt-1">{errors[`experience-${index}-location`]}</p>}
                 </div>
                 <div>
                   <input
@@ -834,7 +593,6 @@ const ResumeBuilder = forwardRef((props, ref) => {
           </button>
         </div>
 
-        {/* Technical Skills */}
         <div className="mb-8">
           <h3 className="text-2xl font-semibold mb-4">Technical Skills</h3>
           {skills.map((skill, index) => (
@@ -886,7 +644,6 @@ const ResumeBuilder = forwardRef((props, ref) => {
           </button>
         </div>
 
-        {/* Education */}
         <div className="mb-8">
           <h3 className="text-2xl font-semibold mb-4">Education</h3>
           {education.map((edu, index) => (
@@ -949,7 +706,6 @@ const ResumeBuilder = forwardRef((props, ref) => {
           </button>
         </div>
 
-        {/* Save and Download Buttons */}
         <div className="flex flex-wrap justify-center gap-4 mt-8 px-4">
           <button
             onClick={handleSave}
@@ -972,10 +728,11 @@ const ResumeBuilder = forwardRef((props, ref) => {
             Download Resume (Word)
           </button>
         </div>
-
       </motion.div>
     </motion.div>
   );
-});
+};
+
+const ResumeBuilder = forwardRef(ResumeBuilderComponent);
 
 export default ResumeBuilder;
