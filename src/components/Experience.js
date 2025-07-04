@@ -22,7 +22,7 @@ const Experience = () => {
           transition={{ duration: 0.8, delay: 0.3 + index * 0.1 }}
         >
           <h3 className="text-xl font-semibold mb-1 text-white">{job.title}</h3>
-          <p className="text-gray-400 text-sm">{job.company} | {job.period}</p>
+          <p className="text-gray-400 text-lg">{job.company}{job.location ? `, ${job.location}` : ''} | <span className="font-bold">{job.period}</span></p>
           <ul className="list-disc ml-5 mt-2">
             {job.tasks.map((task, i) => (
               <li key={i} className="mb-1 text-base md:text-lg text-left md:text-justify">{task}</li>

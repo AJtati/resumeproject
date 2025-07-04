@@ -106,6 +106,7 @@ export const experience = {
     {
       title: 'DevOps Engineer',
       company: 'Sky Betting and Gaming (Flutter UKI)',
+      location: 'Leeds, UK',
       period: 'June 2023 – Present',
       tasks: [
         'Development and maintenance of CI/CD pipelines (Jenkins, GoCD, Concourse)',
@@ -123,7 +124,8 @@ export const experience = {
     },
     {
       title: 'AWS DevOps Engineer',
-      company: 'IBM Hyderabad',
+      company: 'IBM',
+      location: 'Hyderabad, India',
       period: 'April 2021 – May 2023',
       tasks: [
         'Developed microservice on boarding tools leveraging Python and Jenkins allowing for easy creation and maintenance of build jobs and Kubernetes deploy and services.',
@@ -158,6 +160,7 @@ export const experience = {
     {
       title: 'DevOps Engineer',
       company: 'Tech Mahindra Limited',
+      location: 'Hyderabad, India',
       period: 'Nov 2016 – March 2021',
       tasks: [
         'Hands on experience with AWS Cloud services like EC2, VPC, S3, IAM, Route 53 and Lambda.',
