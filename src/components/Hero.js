@@ -3,10 +3,8 @@ import { hero } from '../content';
 
 function Hero() {
   return (
-    <section id="home" className="hero-section">
-      <h1>{hero.title}</h1>
-      <p className="lead">{hero.subtitle}</p>
-    </section>
+    <h1><span className="text-white">{hero.title}</span></h1>
+      <p className="lead"><span className="text-gray-400 text-lg">{hero.subtitle}</span></p>
   );
 }
 

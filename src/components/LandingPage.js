@@ -27,7 +27,7 @@ const LandingPage = forwardRef((props, ref) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            {landingPage.title}<br />{landingPage.subtitle}
+                        {landingPage.title}<br /><span className="text-gray-400 text-3xl md:text-4xl">{landingPage.subtitle}</span>
           </motion.h1>
           <motion.p
             className="text-lg md:text-xl uppercase tracking-wider my-2 opacity-0 transform translate-y-5"
