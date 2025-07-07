@@ -31,7 +31,7 @@
     @apply text-white text-2xl no-underline;
   }
 
-  @screen md {
+  @screen lg {
     .contact-icons-header {
       @apply static transform-none;
     }
@@ -55,7 +55,7 @@
   }
 
   /* Mobile Navigation Overlay */
-  @screen md {
+  @screen lg {
     .global-header {
       @apply justify-start;
     }
@@ -280,7 +280,7 @@
     }
   }
 
-  @screen md {
+  @screen lg {
     .global-header {
       @apply justify-start py-5;
     }
@@ -400,7 +400,7 @@
     @apply text-sm mt-1;
   }
 
-  @screen md {
+  @screen lg {
     .bottom-nav {
       @apply flex justify-around;
     }
