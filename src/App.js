@@ -111,7 +111,17 @@ function App() {
     doc.setFontSize(10);
     const summaryLines = doc.splitTextToSize(summary.paragraph, pageWidth - margin * 2);
     summaryLines.forEach(line => {
-      yPos = addText(line, margin, yPos, { fontSize: 10 });
+      if (line.includes('Key Highlights:')) {
+        doc.setFont('Arial', 'bold');
+        doc.setFontSize(10);
+        yPos = addText(line, margin, yPos, { fontSize: 10 });
+        doc.setFont('Arial', 'normal');
+        doc.setFontSize(10);
+      } else if (line.startsWith('●')) {
+        yPos = addText(line, margin + 10, yPos, { fontSize: 10 });
+      } else {
+        yPos = addText(line, margin, yPos, { fontSize: 10 });
+      }
     });
     yPos += 10;
 
@@ -258,8 +268,21 @@ function App() {
               text: 'Summary',
               heading: 'Heading1',
             }),
-            new Paragraph({
-              text: summary.paragraph,
+            ...summary.paragraph.split('\n').map(line => {
+                if (line.includes('Key Highlights:')) {
+                    return new Paragraph({
+                        children: [new TextRun({ text: line, bold: true, size: 20 })]
+                    });
+                } else if (line.startsWith('●')) {
+                    return new Paragraph({
+                        text: line.substring(1).trim(),
+                        bullet: {
+                            level: 0
+                        }
+                    });
+                } else {
+                    return new Paragraph({ text: line });
+                }
             }),
             new Paragraph({
               children: [
@@ -423,7 +446,7 @@ function App() {
 
         {/* Logo */}
         <div className="absolute left-1/2 -translate-x-1/2 lg:static lg:left-auto lg:translate-x-0">
-          <img src={logoT} alt="Logo" className="h-10" />
+          <Link to="/"><img src={logoT} alt="Logo" className="h-16 transition-all duration-300" /></Link>
         </div>
 
         {/* Desktop Navigation */}
