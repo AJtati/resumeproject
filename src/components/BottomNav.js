@@ -11,7 +11,7 @@ const iconMap = {
 const BottomNav = () => {
   return (
     <motion.nav
-      className="fixed bottom-0 left-0 w-full bg-black bg-opacity-90 shadow-lg z-50 py-2.5 flex justify-around md:hidden"
+      className="fixed bottom-0 left-0 w-full bg-black bg-opacity-90 shadow-lg z-50 py-2.5 flex justify-around lg:hidden"
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 120, damping: 14, delay: 0.5 }}
