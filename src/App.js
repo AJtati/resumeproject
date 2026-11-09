@@ -410,18 +410,58 @@ function App() {
   const [selectedJob, setSelectedJob] = useState(0);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const audioContextRef = useRef(null);
+  const audioResumeRef = useRef(null);
   const screenRef = useRef(null);
   const reducedMotion = useReducedMotion();
 
-  const playCue = useCallback(async (kind = 'navigate', force = false) => {
-    if (!force && !soundEnabled) return;
+  const getAudioContext = useCallback(() => {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContextClass) return;
+    if (!AudioContextClass) return null;
     try {
-      if (!audioContextRef.current) audioContextRef.current = new AudioContextClass();
-      const context = audioContextRef.current;
-      if (context.state !== 'running') await context.resume();
-      if (context.state !== 'running') return;
+      if (!audioContextRef.current) {
+        try {
+          audioContextRef.current = new AudioContextClass({ latencyHint: 'interactive' });
+        } catch {
+          audioContextRef.current = new AudioContextClass();
+        }
+      }
+      return audioContextRef.current;
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const unlockAudio = useCallback((force = false) => {
+    if (!force && !soundEnabled) return Promise.resolve(false);
+    const context = getAudioContext();
+    if (!context) return Promise.resolve(false);
+    if (context.state === 'running') return Promise.resolve(true);
+    if (audioResumeRef.current) return audioResumeRef.current;
+    try {
+      // iOS Safari unlocks Web Audio most reliably when resume() is called
+      // synchronously inside the first trusted pointer gesture.
+      const silentBuffer = context.createBuffer(1, 1, context.sampleRate);
+      const unlockSource = context.createBufferSource();
+      unlockSource.buffer = silentBuffer;
+      unlockSource.connect(context.destination);
+      unlockSource.start(0);
+      unlockSource.onended = () => unlockSource.disconnect();
+      audioResumeRef.current = Promise.resolve(context.resume())
+        .then(() => context.state === 'running')
+        .catch(() => false)
+        .finally(() => { audioResumeRef.current = null; });
+      return audioResumeRef.current;
+    } catch {
+      audioResumeRef.current = null;
+      return Promise.resolve(false);
+    }
+  }, [getAudioContext, soundEnabled]);
+
+  const playCue = useCallback((kind = 'navigate', force = false) => {
+    if (!force && !soundEnabled) return;
+    const context = getAudioContext();
+    if (!context) return;
+    const scheduleCue = () => {
       const start = context.currentTime;
       const notes = kind === 'power' ? [392, 587.33] : kind === 'select' ? [523.25] : [440, 659.25];
       notes.forEach((frequency, index) => {
@@ -431,7 +471,7 @@ function App() {
         oscillator.type = 'sine';
         oscillator.frequency.setValueAtTime(frequency, time);
         gain.gain.setValueAtTime(0.0001, time);
-        gain.gain.exponentialRampToValueAtTime(0.035, time + 0.012);
+        gain.gain.exponentialRampToValueAtTime(0.09, time + 0.012);
         gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.16);
         oscillator.connect(gain);
         gain.connect(context.destination);
@@ -439,10 +479,16 @@ function App() {
         oscillator.stop(time + 0.17);
         oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); };
       });
-    } catch {
-      // Keep navigation responsive if this browser blocks Web Audio.
+    };
+    if (context.state === 'running') {
+      try { scheduleCue(); } catch { /* Keep navigation responsive if audio output fails. */ }
+      return;
     }
-  }, [soundEnabled]);
+    unlockAudio(force).then((ready) => {
+      if (!ready || (!force && !soundEnabled)) return;
+      try { scheduleCue(); } catch { /* Keep navigation responsive if audio output fails. */ }
+    });
+  }, [getAudioContext, soundEnabled, unlockAudio]);
 
   const navigate = useCallback((nextSection) => {
     setSection(nextSection);
@@ -458,21 +504,18 @@ function App() {
 
   const toggleSound = async () => {
     if (!soundEnabled) {
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContextClass) return;
-      try {
-        if (!audioContextRef.current) audioContextRef.current = new AudioContextClass();
-        await audioContextRef.current.resume();
-        if (audioContextRef.current.state !== 'running') return;
-        setSoundEnabled(true);
-        await playCue('power', true);
-      } catch {
-        setSoundEnabled(false);
-      }
+      const ready = await unlockAudio(true);
+      if (!ready) return;
+      setSoundEnabled(true);
+      playCue('power', true);
     } else {
       setSoundEnabled(false);
       if (audioContextRef.current?.state === 'running') audioContextRef.current.suspend();
     }
+  };
+
+  const unlockAudioFromGesture = () => {
+    if (soundEnabled) unlockAudio();
   };
 
   useEffect(() => {
@@ -495,7 +538,7 @@ function App() {
   const activeLabel = sections.find((item) => item.id === section)?.label || 'Overview';
 
   return (
-    <main className="portfolio-shell">
+    <main className="portfolio-shell" onPointerDownCapture={unlockAudioFromGesture}>
       <header className="topbar">
         <button className="wordmark" type="button" onClick={() => navigate('home')} aria-label="Ajith Surya Thati logo, return to portfolio overview"><img src={logoMark} alt="Ajith Surya Thati logo" /></button>
         <nav className="top-navigation" aria-label="Portfolio sections">
