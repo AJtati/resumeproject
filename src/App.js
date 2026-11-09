@@ -409,77 +409,24 @@ function App() {
   const [selectedProject, setSelectedProject] = useState(0);
   const [selectedJob, setSelectedJob] = useState(0);
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const audioContextRef = useRef(null);
+  const activeAudioRef = useRef(null);
   const screenRef = useRef(null);
   const reducedMotion = useReducedMotion();
 
-  const getAudioContext = useCallback(() => {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContextClass) return null;
-    try {
-      if (!audioContextRef.current) {
-        try {
-          audioContextRef.current = new AudioContextClass({ latencyHint: 'interactive' });
-        } catch {
-          audioContextRef.current = new AudioContextClass();
-        }
-      }
-      return audioContextRef.current;
-    } catch {
-      return null;
-    }
-  }, []);
-
-  const unlockAudio = useCallback(() => {
-    const context = getAudioContext();
-    if (!context) return Promise.resolve(false);
-    if (context.state === 'running') return Promise.resolve(true);
-    try {
-      // Call resume synchronously from the trusted tap, then wait until Safari
-      // confirms rendering is active before creating short-lived audio nodes.
-      return context.resume()
-        .then(() => context.state === 'running')
-        .catch(() => false);
-    } catch {
-      return Promise.resolve(false);
-    }
-  }, [getAudioContext]);
-
   const playCue = useCallback((kind = 'navigate', force = false) => {
     if (!force && !soundEnabled) return;
-    const context = getAudioContext();
-    if (!context) return;
-    const scheduleCue = () => {
-      const start = context.currentTime;
-      const notes = kind === 'power' ? [392, 587.33] : kind === 'select' ? [523.25] : [440, 659.25];
-      notes.forEach((frequency, index) => {
-        const oscillator = context.createOscillator();
-        const gain = context.createGain();
-        const time = start + index * 0.075;
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(frequency, time);
-        gain.gain.setValueAtTime(0.0001, time);
-        gain.gain.exponentialRampToValueAtTime(0.22, time + 0.012);
-        gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.16);
-        oscillator.connect(gain);
-        gain.connect(context.destination);
-        oscillator.start(time);
-        oscillator.stop(time + 0.17);
-        oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); };
-      });
-    };
-    if (context.state === 'running') {
-      try { scheduleCue(); } catch { /* Keep navigation responsive if audio output fails. */ }
-      return;
-    }
-    // On iOS, nodes scheduled while the context is suspended can expire before
-    // Safari resumes rendering. Resume is initiated synchronously by the tap;
-    // schedule the cue only after the context is actually running.
-    unlockAudio().then((ready) => {
-      if (!ready || (!force && !soundEnabled)) return;
-      try { scheduleCue(); } catch { /* Keep navigation responsive if audio output fails. */ }
-    });
-  }, [getAudioContext, soundEnabled, unlockAudio]);
+    try {
+      // HTML media playback is requested synchronously in the trusted click,
+      // which is more dependable on iOS Safari than scheduling Web Audio nodes.
+      activeAudioRef.current?.pause();
+      const audio = new Audio(`${process.env.PUBLIC_URL}/sounds/interface-click.wav`);
+      audio.preload = 'auto';
+      audio.volume = kind === 'select' ? 0.72 : 0.88;
+      activeAudioRef.current = audio;
+      const playback = audio.play();
+      if (playback && typeof playback.catch === 'function') playback.catch(() => {});
+    } catch { /* Keep navigation responsive when media playback is unavailable. */ }
+  }, [soundEnabled]);
 
   const navigate = useCallback((nextSection) => {
     setSection(nextSection);
