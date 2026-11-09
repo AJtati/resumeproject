@@ -435,21 +435,13 @@ function App() {
     if (!context) return Promise.resolve(false);
     if (context.state === 'running') return Promise.resolve(true);
     try {
-      // iOS Safari unlocks Web Audio most reliably when resume() is called
-      // synchronously inside the first trusted pointer gesture.
-      const silentBuffer = context.createBuffer(1, 1, context.sampleRate);
-      const unlockSource = context.createBufferSource();
-      unlockSource.buffer = silentBuffer;
-      unlockSource.connect(context.destination);
-      unlockSource.start(0);
-      unlockSource.onended = () => unlockSource.disconnect();
-      // Do not wait on the resume promise: iOS Safari may leave it pending even
-      // though the trusted tap has successfully unlocked audio.
-      const resume = context.resume();
-      if (resume && typeof resume.catch === 'function') resume.catch(() => {});
-      return context.state === 'running';
+      // Call resume synchronously from the trusted tap, then wait until Safari
+      // confirms rendering is active before creating short-lived audio nodes.
+      return context.resume()
+        .then(() => context.state === 'running')
+        .catch(() => false);
     } catch {
-      return false;
+      return Promise.resolve(false);
     }
   }, [getAudioContext]);
 
@@ -467,7 +459,7 @@ function App() {
         oscillator.type = 'sine';
         oscillator.frequency.setValueAtTime(frequency, time);
         gain.gain.setValueAtTime(0.0001, time);
-        gain.gain.exponentialRampToValueAtTime(0.09, time + 0.012);
+        gain.gain.exponentialRampToValueAtTime(0.22, time + 0.012);
         gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.16);
         oscillator.connect(gain);
         gain.connect(context.destination);
@@ -480,10 +472,13 @@ function App() {
       try { scheduleCue(); } catch { /* Keep navigation responsive if audio output fails. */ }
       return;
     }
-    // Schedule immediately from the original gesture. On iOS, waiting for
-    // resume() to settle can move playback outside Safari's user activation.
-    unlockAudio();
-    try { scheduleCue(); } catch { /* Keep navigation responsive if audio output fails. */ }
+    // On iOS, nodes scheduled while the context is suspended can expire before
+    // Safari resumes rendering. Resume is initiated synchronously by the tap;
+    // schedule the cue only after the context is actually running.
+    unlockAudio().then((ready) => {
+      if (!ready || (!force && !soundEnabled)) return;
+      try { scheduleCue(); } catch { /* Keep navigation responsive if audio output fails. */ }
+    });
   }, [getAudioContext, soundEnabled, unlockAudio]);
 
   const navigate = useCallback((nextSection) => {
@@ -500,16 +495,12 @@ function App() {
 
   const toggleSound = () => {
     if (!soundEnabled) {
-      unlockAudio();
       setSoundEnabled(true);
       playCue('power', true);
     } else {
       setSoundEnabled(false);
-      if (audioContextRef.current?.state === 'running') audioContextRef.current.suspend();
     }
   };
-
-  const unlockAudioFromGesture = () => { if (soundEnabled) unlockAudio(); };
 
   useEffect(() => {
     if (section !== 'home') screenRef.current?.focus({ preventScroll: true });
@@ -531,7 +522,7 @@ function App() {
   const activeLabel = sections.find((item) => item.id === section)?.label || 'Overview';
 
   return (
-    <main className="portfolio-shell" onPointerDownCapture={unlockAudioFromGesture}>
+    <main className="portfolio-shell">
       <header className="topbar">
         <button className="wordmark" type="button" onClick={() => navigate('home')} aria-label="Ajith Surya Thati logo, return to portfolio overview"><img src={logoMark} alt="Ajith Surya Thati logo" /></button>
         <nav className="top-navigation" aria-label="Portfolio sections">
