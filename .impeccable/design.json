@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-09T14:44:50Z",
+  "title": "Design System: Ajith Surya Thati Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Signal Blue",
+        "canonical": "oklch(54% 0.19 253)",
+        "tonalRamp": ["#102847", "#153e6e", "#14559a", "#0066cc", "#0071e3", "#4b9cf0", "#a4ceff", "#eaf3ff"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Soft Black",
+        "canonical": "oklch(18% 0.004 285)",
+        "tonalRamp": ["#1d1d1f", "#343438", "#515158", "#6e6e73", "#8c8c91", "#b1b1b6", "#d2d2d7", "#f5f5f7"]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Cloud White",
+        "canonical": "oklch(98% 0.003 285)",
+        "tonalRamp": ["#343438", "#515158", "#6e6e73", "#8c8c91", "#b1b1b6", "#d2d2d7", "#f5f5f7", "#fbfbfd"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "System Display",
+        "purpose": "Large name and chapter titles."
+      },
+      "body": {
+        "displayName": "System Text",
+        "purpose": "Resume content and interface labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "soft-float",
+        "value": "0 8px 26px rgba(35,51,71,.08)",
+        "purpose": "Quiet separation for a small floating portrait caption or label."
+      }
+    ],
+    "motion": [
+      {
+        "name": "portrait-breathe",
+        "value": "5.8s cubic-bezier(.42,0,.58,1)",
+        "purpose": "Very subtle vertical idle motion on the portrait."
+      },
+      {
+        "name": "pointer-follow",
+        "value": "240ms cubic-bezier(.2,.8,.2,1)",
+        "purpose": "Softly follows pointer movement without delaying response."
+      }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "700px" },
+      { "name": "tablet", "value": "1000px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main chapter entry action.",
+      "html": "<button class="ds-primary">ENTER THE SIGNAL <span aria-hidden="true">→</span></button>",
+      "css": ".ds-primary { min-height: 48px; padding: 0 21px; border: 1px solid #0071e3; border-radius: 999px; background: #0071e3; color: #fff; font: 600 .88rem/1 -apple-system, BlinkMacSystemFont, sans-serif; transition: background .2s ease, transform .2s ease; } .ds-primary:hover { background: #0066cc; transform: translateY(-1px); } .ds-primary:focus-visible { outline: 3px solid #0071e3; outline-offset: 4px; } .ds-primary:active { transform: scale(.98); }"
+    },
+    {
+      "name": "Chapter Navigation",
+      "kind": "nav",
+      "description": "Plain-language chapter choices with a blue active marker.",
+      "html": "<nav class="ds-nav"><a href="#work" aria-current="page">Work</a><a href="#career">Career</a></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; gap: 24px; font: 500 .82rem/1 -apple-system, BlinkMacSystemFont, sans-serif; } .ds-nav a { color: #45454a; text-decoration: none; } .ds-nav a:hover, .ds-nav a[aria-current="page"] { color: #0071e3; } .ds-nav a:focus-visible { outline: 3px solid #0071e3; outline-offset: 4px; border-radius: 4px; }"
+    },
+    {
+      "name": "Sound Toggle",
+      "kind": "chip",
+      "description": "Shows whether navigation sounds are enabled.",
+      "html": "<button class="ds-sound" aria-pressed="true">Sound on</button>",
+      "css": ".ds-sound { min-height: 38px; padding: 0 13px; border: 1px solid #d4e8ff; border-radius: 999px; background: #eaf3ff; color: #075da9; font: 500 .78rem/1 -apple-system, BlinkMacSystemFont, sans-serif; } .ds-sound:focus-visible { outline: 3px solid #0071e3; outline-offset: 4px; } .ds-sound:active { transform: scale(.98); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Soft Signal",
+    "overview": "A welcoming, bright portfolio with generous whitespace, crisp system type, restrained blue accents, and a subtle interactive portrait. Signal language stays in the project's chapter system without dominating the page.",
+    "keyCharacteristics": [
+      "Personal and calm",
+      "Open, scannable resume chapters",
+      "A portrait that responds to pointer and scroll",
+      "Direct contact controls"
+    ],
+    "rules": [
+      { "name": "Quiet surface", "body": "Use near-white surfaces, near-black text, and thin separators.", "section": "colors" },
+      { "name": "Motion with purpose", "body": "Make pointer motion immediate and keep idle movement very subtle.", "section": "components" }
+    ],
+    "dos": ["Keep full resume content findable.", "Respect reduced motion."],
+    "donts": ["Don't copy a reference layout.", "Don't autoplay or loop sound."]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "asset": "logo-symbol.webp",
+  "source": "src/assets/logo_t.png",
+  "provenance": "User-provided portfolio logo; cropped to the emblem area for the compact website header, preserving the original artwork and transparency.",
+  "crop": "790x690 pixels at x=117, y=38 from the 1024x1024 source; resized proportionally to 256px max dimension and encoded as WebP.",
+  "purpose": "Header emblem"
+}
