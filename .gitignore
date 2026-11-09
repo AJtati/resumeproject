@@ -11,6 +11,11 @@
 # production
 /build
 
+# Generated Impeccable mockups, screenshots, and build artifacts
+.impeccable/build/
+.impeccable/mocks/
+.impeccable/review/
+
 # misc
 .DS_Store
 .env.local
