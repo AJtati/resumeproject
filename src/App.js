@@ -410,7 +410,6 @@ function App() {
   const [selectedJob, setSelectedJob] = useState(0);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const audioContextRef = useRef(null);
-  const audioResumeRef = useRef(null);
   const screenRef = useRef(null);
   const reducedMotion = useReducedMotion();
 
@@ -431,12 +430,10 @@ function App() {
     }
   }, []);
 
-  const unlockAudio = useCallback((force = false) => {
-    if (!force && !soundEnabled) return Promise.resolve(false);
+  const unlockAudio = useCallback(() => {
     const context = getAudioContext();
     if (!context) return Promise.resolve(false);
     if (context.state === 'running') return Promise.resolve(true);
-    if (audioResumeRef.current) return audioResumeRef.current;
     try {
       // iOS Safari unlocks Web Audio most reliably when resume() is called
       // synchronously inside the first trusted pointer gesture.
@@ -446,16 +443,15 @@ function App() {
       unlockSource.connect(context.destination);
       unlockSource.start(0);
       unlockSource.onended = () => unlockSource.disconnect();
-      audioResumeRef.current = Promise.resolve(context.resume())
-        .then(() => context.state === 'running')
-        .catch(() => false)
-        .finally(() => { audioResumeRef.current = null; });
-      return audioResumeRef.current;
+      // Do not wait on the resume promise: iOS Safari may leave it pending even
+      // though the trusted tap has successfully unlocked audio.
+      const resume = context.resume();
+      if (resume && typeof resume.catch === 'function') resume.catch(() => {});
+      return context.state === 'running';
     } catch {
-      audioResumeRef.current = null;
-      return Promise.resolve(false);
+      return false;
     }
-  }, [getAudioContext, soundEnabled]);
+  }, [getAudioContext]);
 
   const playCue = useCallback((kind = 'navigate', force = false) => {
     if (!force && !soundEnabled) return;
@@ -484,10 +480,10 @@ function App() {
       try { scheduleCue(); } catch { /* Keep navigation responsive if audio output fails. */ }
       return;
     }
-    unlockAudio(force).then((ready) => {
-      if (!ready || (!force && !soundEnabled)) return;
-      try { scheduleCue(); } catch { /* Keep navigation responsive if audio output fails. */ }
-    });
+    // Schedule immediately from the original gesture. On iOS, waiting for
+    // resume() to settle can move playback outside Safari's user activation.
+    unlockAudio();
+    try { scheduleCue(); } catch { /* Keep navigation responsive if audio output fails. */ }
   }, [getAudioContext, soundEnabled, unlockAudio]);
 
   const navigate = useCallback((nextSection) => {
@@ -502,10 +498,9 @@ function App() {
     playCue('select');
   };
 
-  const toggleSound = async () => {
+  const toggleSound = () => {
     if (!soundEnabled) {
-      const ready = await unlockAudio(true);
-      if (!ready) return;
+      unlockAudio();
       setSoundEnabled(true);
       playCue('power', true);
     } else {
@@ -514,9 +509,7 @@ function App() {
     }
   };
 
-  const unlockAudioFromGesture = () => {
-    if (soundEnabled) unlockAudio();
-  };
+  const unlockAudioFromGesture = () => { if (soundEnabled) unlockAudio(); };
 
   useEffect(() => {
     if (section !== 'home') screenRef.current?.focus({ preventScroll: true });
