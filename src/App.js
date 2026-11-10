@@ -404,12 +404,18 @@ function ProfileScreen({ onBack }) {
   );
 }
 
+function isAppleMobileBrowser() {
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent)
+    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
 function App() {
   const [section, setSection] = useState('home');
   const [selectedProject, setSelectedProject] = useState(0);
   const [selectedJob, setSelectedJob] = useState(0);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const audioContextRef = useRef(null);
+  const mediaAudioRef = useRef(null);
   const screenRef = useRef(null);
   const reducedMotion = useReducedMotion();
 
@@ -447,6 +453,17 @@ function App() {
 
   const playCue = useCallback((kind = 'navigate', force = false) => {
     if (!force && !soundEnabled) return;
+    if (isAppleMobileBrowser()) {
+      try {
+        mediaAudioRef.current?.pause();
+        const audio = new Audio(`${process.env.PUBLIC_URL}/sounds/${kind === 'select' || kind === 'power' ? kind : 'navigate'}.wav`);
+        mediaAudioRef.current = audio;
+        audio.onended = () => { if (mediaAudioRef.current === audio) mediaAudioRef.current = null; };
+        const playback = audio.play();
+        if (playback && typeof playback.catch === 'function') playback.catch(() => {});
+      } catch { /* Keep navigation responsive if mobile media playback fails. */ }
+      return;
+    }
     const context = getAudioContext();
     if (!context) return;
     const scheduleCue = () => {
@@ -496,6 +513,7 @@ function App() {
       playCue('power', true);
     } else {
       setSoundEnabled(false);
+      mediaAudioRef.current?.pause();
     }
   };
 
@@ -526,9 +544,8 @@ function App() {
           {sections.map((item) => <SectionLink key={item.id} section={item} active={section === item.id} onSelect={navigate} />)}
         </nav>
         <div className="top-actions">
-          <button className={`sound-toggle ${soundEnabled ? 'is-on' : ''}`} type="button" onClick={toggleSound} aria-pressed={soundEnabled} aria-label={soundEnabled ? 'Turn sound effects off' : 'Turn sound effects on'}>
+          <button className={`sound-toggle ${soundEnabled ? 'is-on' : ''}`} type="button" onClick={toggleSound} aria-pressed={soundEnabled} aria-label={soundEnabled ? 'Mute sound effects' : 'Turn sound effects on'} title={soundEnabled ? 'Mute sound effects' : 'Turn sound effects on'}>
             {soundEnabled ? <FaVolumeHigh aria-hidden="true" /> : <FaVolumeXmark aria-hidden="true" />}
-            <span>SOUND {soundEnabled ? 'ON' : 'OFF'}</span>
           </button>
           <a className="call-button" href="tel:+447469475250" aria-label="Call Ajith"><FaPhone aria-hidden="true" /><span className="call-label">CALL</span></a>
           <a className="resume-download" href={`${process.env.PUBLIC_URL}/Ajith-Surya-Thati-Resume.pdf`} download="Ajith-Surya-Thati-Resume.pdf" aria-label="Download PDF resume" title="Download PDF resume"><span className="resume-label">RESUME PDF</span><FaDownload aria-hidden="true" /></a>

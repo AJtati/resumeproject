@@ -11,6 +11,10 @@
 # production
 /build
 
+# Firebase CLI cache and debug logs
+/.firebase/
+firebase-debug.log*
+
 # Generated Impeccable mockups, screenshots, and build artifacts
 .impeccable/build/
 .impeccable/mocks/
