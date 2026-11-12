@@ -23,9 +23,10 @@ const projects = [
     stack: 'Terraform · ArgoCD · Helm · AWS IRSA',
     summary: 'A repeatable multi-environment Kubernetes foundation, with drift detection, health checks, and least-privilege workload access.',
     notes: [
-      'Designed a multi-environment EKS blueprint with modular Terraform and EC2 Launch Templates on Amazon Linux 2023.',
-      'Configured GitOps application delivery with ArgoCD and Helm, including drift detection and health checks.',
-      'Used AWS IRSA and External Secrets Operator for least-privilege pod access and automated secret synchronization.',
+      'Defined a reusable Terraform foundation for multiple environments, with EKS worker capacity on EC2 Launch Templates and Amazon Linux 2023.',
+      'Connected cluster workloads to a GitOps delivery flow using ArgoCD and Helm, with drift detection and health checks for deployed applications.',
+      'Designed workload identity and secret delivery around AWS IRSA and External Secrets Operator, so pods can access only the AWS resources they need.',
+      'Engineering focus: infrastructure as code, Kubernetes platform design, deployment automation, and least-privilege cloud access.',
     ],
     mark: '01',
   },
@@ -35,9 +36,10 @@ const projects = [
     stack: 'Electron · Node.js · FFmpeg · Shell',
     summary: 'A local-first desktop utility for remuxing video without uploading large media files.',
     notes: [
-      'Built a cross-platform desktop app bundling native FFmpeg binaries for macOS and Windows.',
-      'Runs media processing locally with multi-threaded execution and visible progress tracking.',
-      'Uses stream-copying to avoid cloud upload latency for heavy media files.',
+      'Built a cross-platform desktop workflow with Electron and Node.js, bundling FFmpeg for macOS and Windows.',
+      'Keeps source media on the user’s machine and uses FFmpeg stream-copying for remuxing, avoiding a cloud upload and unnecessary re-encoding.',
+      'Runs processing outside the interface and reports progress, so long operations remain visible while the app stays responsive.',
+      'Engineering focus: desktop application structure, native binary packaging, process coordination, and media tooling.',
     ],
     mark: '02',
   },
@@ -47,9 +49,10 @@ const projects = [
     stack: 'Next.js · TypeScript · Firebase · Capacitor',
     summary: 'A personal shift planner with weekly, monthly, and list views, account-based data, and reminders. The web app is live, with native build targets configured for mobile and Android TV.',
     notes: [
-      'Added signup, login, password recovery, and per-user shift data with Firebase Authentication and Firestore.',
-      'Built weekly, monthly calendar, and filtered list views, plus shift, leave, holiday, and day-off entries.',
-      'Configured Capacitor targets for iOS and Android, including Android mobile and TV flavors with reminders.',
+      'Implemented signup, login, and password recovery with Firebase Authentication, keeping shift records associated with each account in Firestore.',
+      'Modelled the planner around shift, leave, holiday, and day-off entries, then surfaced them in weekly, monthly calendar, and filtered list views.',
+      'Made the application available as a live web app and configured Capacitor targets for iOS and Android, including mobile and Android TV variants.',
+      'Added reminder support to the mobile builds; engineering focus includes account flows, user-scoped data, date-based UI, and cross-platform delivery.',
     ],
     links: [
       { label: 'Open web app', url: 'https://shiftracker.web.app' },
@@ -63,9 +66,10 @@ const projects = [
     stack: 'React · Canvas · Capacitor · Electron',
     summary: 'A browser-based photo and print studio for passport sizing, print sheets, collages, custom frames, resume layouts, and calendar tools.',
     notes: [
-      'Created passport and visa presets, custom dimensions, high-resolution cropping, and print-ready photo sheets.',
-      'Added multi-photo layouts, collage and frame tools, plus a resume builder.',
-      'Includes additional Panchangam, horoscope, Muhurtham, and marriage matching tools; Android, iOS, and Electron build paths are configured.',
+      'Built image editing flows around browser Canvas, including passport and visa presets, custom dimensions, high-resolution cropping, and print-ready photo sheets.',
+      'Expanded the same application with multi-photo layouts, collages, custom frames, resume layouts, and calendar tools.',
+      'Added Panchangam, horoscope, Muhurtham, and marriage matching features as additional tools within the product.',
+      'Configured Capacitor and Electron build paths for mobile and desktop. Engineering focus: image processing, canvas rendering, print layout, and extending a multi-tool application.',
     ],
     links: [
       { label: 'Open web app', url: 'https://ajtati.github.io/Passportphotomaker/' },
@@ -79,9 +83,10 @@ const projects = [
     stack: 'TypeScript · Bun · Swift / WebKit · LaTeX',
     summary: 'An evidence-first desktop workspace for researching roles, evaluating job fit, and producing grounded resume and cover letter drafts.',
     notes: [
-      'Imports PDF, plain-text, and LaTeX resumes into a reusable candidate profile and resume backbone.',
-      'Scores job descriptions with deterministic evidence matching and separate eligibility, language, and location checks.',
-      'Keeps optional AI rewrites constrained, and compiles application PDFs locally with LuaLaTeX or XeLaTeX.',
+      'Imports PDF, plain-text, and LaTeX resumes into a reusable candidate profile, separating source evidence from application-specific documents.',
+      'Matches job descriptions against that evidence with deterministic scoring, while reporting eligibility, language, and location checks separately.',
+      'Constrains optional AI-assisted rewrites to the supplied profile and compiles final application PDFs locally with LuaLaTeX or XeLaTeX.',
+      'Engineering focus: desktop workflows, document parsing, explainable matching, bounded AI integration, and local file generation.',
     ],
     links: [
       { label: 'GitHub repository', url: 'https://github.com/AJtati/Job-automate' },
@@ -94,9 +99,10 @@ const projects = [
     stack: 'React · Framer Motion · Firebase Hosting · GitHub Pages',
     summary: 'An interactive portfolio for exploring my engineering work, career history, toolkit, education, and contact details.',
     notes: [
-      'Built as a responsive React experience with animated transitions and a cursor-responsive illustrated portrait.',
-      'Presents project stories, career history, skills, education, and the complete resume.',
-      'Published on Firebase Hosting and GitHub Pages, with the source maintained on GitHub.',
+      'Built a responsive single-page React interface with section navigation, project selection, keyboard controls, and animated screen transitions.',
+      'Organized the portfolio into data-driven project and career stories, a technical skills view, education, and downloadable resume access.',
+      'Added reduced-motion support and interactive portrait and audio details to the interface.',
+      'Published through Firebase Hosting and GitHub Pages, with source and project content maintained in GitHub.',
     ],
     links: [
       { label: 'Open Firebase site', url: 'https://ajithsuryathati.web.app' },
@@ -111,9 +117,10 @@ const projects = [
     stack: 'HTML · CSS · JavaScript · Firebase · Razorpay',
     summary: 'A learning platform for Praxis programmes, with learner accounts, course enrolment, live cohorts, and certificates.',
     notes: [
-      'Built learner pages for course discovery, enrolment, course playback, cohorts, and account access.',
-      'Added learner achievements and downloadable certificates, with admin tools for managing courses and enrolment.',
-      'Integrated Firebase services and Razorpay checkout with automatic learner access provisioning.',
+      'Implemented learner journeys for discovering programmes, enrolling, accessing courses, joining live cohorts, and managing accounts.',
+      'Connected course completion to learner achievements and downloadable certificates; added admin workflows for courses and enrolments.',
+      'Integrated Firebase services with Razorpay checkout so a successful payment can provision course access.',
+      'Engineering focus: multi-role application flows, payment integration, learner data, and end-to-end access provisioning.',
     ],
     links: [
       { label: 'Open learner platform', url: 'https://skralls.web.app' },
@@ -126,9 +133,10 @@ const projects = [
     stack: 'Next.js · React · TypeScript · Firebase',
     summary: 'A local rakhi storefront for browsing curated bundles, checking availability, and ordering directly over WhatsApp.',
     notes: [
-      'Built product browsing with category filters, search, sorting, and individual product detail routes.',
-      'Added a cart with quantity, stock, minimum-order, and subtotal checks.',
-      'Designed the storefront around rakhi bundles for Middlesbrough and nearby areas, with complimentary gift handling.',
+      'Built a Next.js storefront with category filters, search, sorting, and individual product pages for curated bundles.',
+      'Implemented cart behavior with quantity, stock, minimum-order, and subtotal checks before customers place an order.',
+      'Designed the order flow for local delivery, including Middlesbrough-area bundles, complimentary gift handling, and WhatsApp contact.',
+      'Engineering focus: responsive commerce UI, product browsing, cart state, and practical checkout flows for a local business.',
     ],
     links: [
       { label: 'Open Bandhan Box', url: 'https://bhandhan.web.app' },
@@ -141,9 +149,10 @@ const projects = [
     stack: 'React · TypeScript · Firebase · Firestore',
     summary: 'A room listing and rental management app that helps people browse available rooms and contact properties directly.',
     notes: [
-      'Built a public listing experience with property details, availability, and search entry points.',
-      'Added authenticated admin workflows for properties, tenants, and previous-tenancy records.',
-      'Uses Firebase Authentication, Firestore, Storage, and Cloud Functions for private administration and public listings.',
+      'Created public room listings with property details and availability, alongside search entry points for prospective renters.',
+      'Built authenticated administration flows for managing properties, tenants, and previous-tenancy records.',
+      'Uses Firebase Authentication, Firestore, Storage, and Cloud Functions to support account access, application data, uploaded files, and public listings.',
+      'Engineering focus: full-stack feature flows, access-controlled administration, data-backed listings, and cloud service integration.',
     ],
     links: [
       { label: 'Open RoomRenter', url: 'https://roomrenter.web.app' },
@@ -156,9 +165,10 @@ const projects = [
     stack: 'Kotlin · Jetpack Compose · Media3 · Firebase',
     summary: 'A native Android media app for browsing supported video sources and watching a personal library on mobile and tablet.',
     notes: [
-      'Built the Android interface with Jetpack Compose and Media3 playback components.',
-      'Organizes a selected library into movies, web series, TV shows, kids, and custom categories.',
-      'Includes account and cloud-source integrations, cached library state, and watch-progress handling.',
+      'Built a native Android interface with Kotlin and Jetpack Compose, using Media3 components for playback.',
+      'Organizes a selected media library into movies, web series, TV shows, kids, and custom categories for phone and tablet layouts.',
+      'Handles account and cloud-source integrations alongside cached library state and watch-progress updates.',
+      'Engineering focus: native Android UI, media playback, local state, and integrating remote media sources.',
     ],
     mark: '10',
   },
@@ -168,17 +178,18 @@ const projects = [
     stack: 'Tauri · Rust · TypeScript · age encryption',
     summary: 'A desktop utility for finding protected files across Git repositories and creating encrypted, portable backups with recovery options.',
     notes: [
-      'Scans selected repositories for ignored secret files and project-specific AI instructions, then lets the user review the selection.',
-      'Creates separate passphrase-encrypted and recovery-key-encrypted archives and verifies file hashes during restore.',
-      'Built with a native Tauri shell; macOS DMG and Windows MSI / NSIS installer workflows are configured.',
+      'Scans selected Git repositories for ignored secret files and project-specific AI instructions, then presents the findings for review before archiving.',
+      'Creates distinct archives protected by a passphrase or recovery key, and verifies file hashes during restore to detect changed or damaged files.',
+      'Uses a Tauri desktop shell with Rust and TypeScript; macOS DMG and Windows MSI / NSIS installer workflows are configured.',
+      'Engineering focus: filesystem discovery, secure archive workflows, integrity verification, and cross-platform desktop packaging.',
     ],
     mark: '11',
   },
 ];
 
 const sections = [
-  { id: 'work', label: 'Work', key: '01' },
-  { id: 'career', label: 'Career', key: '02' },
+  { id: 'career', label: 'Career', key: '01' },
+  { id: 'work', label: 'Personal Projects', key: '02' },
   { id: 'toolkit', label: 'Toolkit', key: '03' },
   { id: 'profile', label: 'Profile', key: '04' },
 ];
@@ -189,6 +200,8 @@ const education = [
 ];
 const contactEmail = 'ajithsuryathati@gmail.com';
 const contactPhone = '+44 7469 475250';
+const contactPhoneUri = '+447469475250';
+const whatsAppNumber = '447469475250';
 
 function Waveform({ active = false }) {
   const heights = [6, 9, 5, 11, 8, 14, 9, 18, 12, 24, 16, 34, 22, 50, 28, 40, 18, 30, 14, 22, 10, 16, 8, 13, 6, 11, 5, 8];
@@ -296,8 +309,8 @@ function HomeScreen({ onNavigate, soundEnabled }) {
       <div className="home-copy">
         <h1 id="home-title"><span>AJITH SURYA</span><span>THATI</span></h1>
         <div className="name-wave"><Waveform active={soundEnabled} /></div>
-        <h2>SENIOR PLATFORM &amp; DEVOPS ENGINEER</h2>
-        <p>Cloud platforms, reliable delivery, useful software.</p>
+        <h2>SOFTWARE &amp; PLATFORM ENGINEER</h2>
+        <p>Product software, cloud platforms, reliable delivery.</p>
         <button className="enter-button" type="button" onClick={() => onNavigate('work')}>
           <span>EXPLORE MY WORK</span><FaArrowRight aria-hidden="true" />
         </button>
@@ -324,7 +337,7 @@ function WorkScreen({ selectedProject, setSelectedProject, onBack, playCue }) {
   };
   return (
     <section className="content-screen work-screen" aria-label="Project stories">
-      <ScreenHeading title="Work" onBack={onBack} />
+      <ScreenHeading title="Personal Projects" onBack={onBack} />
       <div className="work-layout">
         <div className="project-index" role="tablist" aria-label="Projects">
           {projects.map((item, index) => (
@@ -335,7 +348,7 @@ function WorkScreen({ selectedProject, setSelectedProject, onBack, playCue }) {
         </div>
         <AnimatePresence mode="wait">
           <motion.article className="project-story" key={project.name} role="tabpanel" initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }} transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}>
-            <div className="story-header"><span>FIELD NOTES&nbsp; / &nbsp;{project.mark}</span><span>{String(selectedProject + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}</span></div>
+            <div className="story-header"><span>PROJECT CASE STUDY&nbsp; / &nbsp;{project.mark}</span><span>{String(selectedProject + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}</span></div>
             <h2>{project.name}</h2>
             <p className="project-type-label">{project.type}</p>
             <p className="story-summary">{project.summary}</p>
@@ -344,7 +357,7 @@ function WorkScreen({ selectedProject, setSelectedProject, onBack, playCue }) {
             {project.links?.length > 0 && <nav className="story-links" aria-label={`${project.name} links`}>
               {project.links.map((link) => <a key={link.url} href={link.url} target="_blank" rel="noreferrer">{link.label}<FaArrowUpRightFromSquare aria-hidden="true" /></a>)}
             </nav>}
-            <h3>What went into it</h3>
+            <h3>Engineering details</h3>
             <ul>{project.notes.map((note) => <li key={note}>{note}</li>)}</ul>
             <div className="story-controls">
               <button type="button" onClick={() => chooseProject((selectedProject + projects.length - 1) % projects.length)}><FaArrowLeft /> PREVIOUS</button>
@@ -385,8 +398,8 @@ function ToolkitScreen({ onBack }) {
   return (
     <section className="content-screen toolkit-screen" aria-label="Technical skills">
       <ScreenHeading title="Toolkit" onBack={onBack} />
-      <p className="toolkit-intro">A practical set of tools for designing, shipping, and operating production platforms.</p>
-      <div className="toolkit-list">{skillGroups.map(([name, skills], index) => <article className="toolkit-row" key={name}><span>{String(index + 1).padStart(2, '0')}</span><h2>{name}</h2><p>{skills}</p><span className="toolkit-frequency" aria-hidden="true"><i /><i /><i /><i /><i /></span></article>)}</div>
+      <p className="toolkit-intro">I build web, desktop, and Android applications, and bring 8+ years of professional experience in cloud platforms and delivery automation. These skills are reflected in the products and platform work shown here.</p>
+      <div className="toolkit-list">{skillGroups.map(({ name, skills, applied }, index) => <article className="toolkit-row" key={name}><span>{String(index + 1).padStart(2, '0')}</span><h2>{name}</h2><div className="toolkit-row-copy"><p>{skills}</p><small>{applied}</small></div><span className="toolkit-frequency" aria-hidden="true"><i /><i /><i /><i /><i /></span></article>)}</div>
     </section>
   );
 }
@@ -396,9 +409,9 @@ function ProfileScreen({ onBack }) {
     <section className="content-screen profile-screen" aria-label="Profile and education">
       <ScreenHeading title="About Ajith" onBack={onBack} />
       <div className="profile-layout">
-        <div className="profile-statement"><p>{summary}</p><a href={`mailto:${contactEmail}`}>Start a conversation <FaArrowUpRightFromSquare /></a></div>
+        <div className="profile-statement"><p>{summary}</p><div className="profile-contact"><strong>Start a conversation</strong><nav className="contact-methods" aria-label="Contact options"><a href={`mailto:${contactEmail}`}>Email <FaArrowUpRightFromSquare aria-hidden="true" /></a><a href={`sms:${contactPhoneUri}`}>SMS</a><a href={`https://wa.me/${whatsAppNumber}`} target="_blank" rel="noreferrer">WhatsApp <FaArrowUpRightFromSquare aria-hidden="true" /></a></nav></div></div>
         <div className="education-record"><span>EDUCATION</span>{education.map((degree, index) => <article key={degree.degree}><small>0{index + 1}</small><div><h2>{degree.degree}</h2><p>{degree.university}</p><time>{degree.period}</time></div></article>)}</div>
-        <div className="profile-links"><a href="tel:+447469475250">{contactPhone}</a><a href={`mailto:${contactEmail}`}>{contactEmail} <FaArrowUpRightFromSquare /></a><a href="https://linkedin.com/in/ajithsurya" target="_blank" rel="noreferrer">LinkedIn <FaLinkedinIn /></a><a href="https://github.com/AJtati" target="_blank" rel="noreferrer">GitHub Profile <FaGithub /></a></div>
+        <div className="profile-links"><a href={`tel:${contactPhoneUri}`}>{contactPhone}</a><a href="https://linkedin.com/in/ajithsurya" target="_blank" rel="noreferrer">LinkedIn <FaLinkedinIn /></a><a href="https://github.com/AJtati" target="_blank" rel="noreferrer">GitHub Profile <FaGithub /></a></div>
       </div>
     </section>
   );

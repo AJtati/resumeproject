@@ -1,0 +1,104 @@
+\documentclass[letterpaper,10pt]{article}
+\usepackage[letterpaper,left=0.45in,right=0.45in,top=0.43in,bottom=0.43in]{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{needspace}
+\ifx\pdfgentounicode\undefined\else
+  \input{glyphtounicode}
+  \pdfgentounicode=1
+\fi
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\raggedright
+\raggedbottom
+\setlist[itemize]{leftmargin=0.20in,label=\textendash,itemsep=1pt,topsep=2pt,parsep=0pt,partopsep=0pt}
+\newcommand{\cvSection}[1]{\vspace{8pt}\noindent{\large\bfseries #1}\par\vspace{2pt}\hrule\vspace{4pt}}
+\newcommand{\resumeRole}[4]{\Needspace{5\baselineskip}\textbf{#1}\hfill #2\\\textit{#3 | #4}\par\vspace{-3pt}}
+\newcommand{\resumeProject}[3]{\Needspace{4\baselineskip}\textbf{#1}\\[-1pt]\textit{T\kern0pt echnology: #2}\\[-2pt]#3\par\vspace{3pt}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Ajith Surya Thati}\\[2pt]
+{\large\bfseries Software and Platform Engineer}\\[4pt]
+\small Hartlepool, United Kingdom $|$ +44 7469 475250 $|$ \href{mailto:ajithsuryathati@gmail.com}{ajithsuryathati@gmail.com}\\[2pt]
+\small \href{https://linkedin.com/in/ajithsurya}{linkedin.com/in/ajithsurya} $|$ \href{https://github.com/AJtati}{github.com/AJtati} $|$ \href{https://ajithsuryathati.web.app}{ajithsuryathati.web.app}
+\end{center}
+\vspace{-7pt}
+\small
+
+\cvSection{Summary}
+Software and Platform Engineer with 8+ years of professional experience delivering cloud platforms, deployment automation, and production services across A\kern0pt WS and Kubernetes. I also build independent web, desktop, and Android applications using React, Next.js, TypeScript, Firebase, Electron, Tauri, Rust, Kotlin, and Jetpack Compose. Experienced across product features and user workf{}lows, cloud integrations, infrastructure as code, CI/CD, and release delivery.
+
+\cvSection{W\kern0pt ork Experience}
+\resumeRole{Platform / DevOps Engineer}{June 2023 -- Present}{Flutter UK \& Ireland (Sky Betting \& Gaming)}{Leeds, UK}
+\begin{itemize}
+\item Manage, deploy, and maintain multi-cluster A\kern0pt WS EKS infrastructure and CI/CD pipelines (Jenkins, GoCD, Concourse, GitHub Actions) supporting high-tra{}ffic Free to Play betting and gaming products.
+\item Executed multi-version in-place upgrades of production EKS clusters from v1.26 through v1.31; audited VPC CNI, CoreDNS, kube-proxy, EBS CSI, and Cluster Autoscaler compatibility with zero customer downtime.
+\item Migrated production worker node fleets from legacy EC2 Launch Configurations to Launch Templates on Amazon Linux 2023 with zero service disruption.
+\item Deployed and maintained EKS observability using Helm, Terraform, Prometheus, Grafana, and Alertmanager; participate in the out-of-hours on-call rota (PagerDuty, JIRA).
+\item Migrated platform tooling including Chef to Cinc, A\kern0pt WS W\kern0pt AF to Cloudflare W\kern0pt AF, and Concourse CI pipelines to GitHub Actions.
+\item Configured Amazon RDS and resolved network dependencies, including NLB-to-RDS connectivity through VPC Endpoint Services.
+\item Built Lambda functions to monitor RDS endpoints and update NLB target groups, and to update S3 policies using CloudFront IP ranges.
+\item Designed A\kern0pt WS CDK custom resources and Lambda automation to provision least-privilege MySQL users and store credentials in A\kern0pt WS Secrets Manager.
+\item Implemented secure pod access with IRSA and External Secrets Operator, replacing Vault and Kube2IAM integrations.
+\item Created and maintained Docker base images and centralized image repositories for product engineering squads.
+\item Evaluated an internal AI agent toolkit and reviewed its telemetry and supply-chain dependencies before rollout.
+\end{itemize}
+\resumeRole{DevOps Engineer}{April 2021 -- May 2023}{IBM}{Remote / Hyderabad, India}
+\begin{itemize}
+\item Built Python and Jenkins microservice onboarding tools to streamline build job creation and Kubernetes deployments.
+\item Managed Docker and Kubernetes deployments; authored Dockerf{}iles, Compose configurations, and Helm charts for CI/CD.
+\item Automated multi-environment infrastructure and configuration management with Terraform and Ansible Tower.
+\item Integrated Sonatype and Veracode scanning into pipelines for code quality and vulnerability analysis.
+\item Used Splunk dashboards for log analysis and proactive incident troubleshooting.
+\item Automated build and release tasks with Bash/Shell and JSON templates across VSTS and Git pipelines.
+\item Helped configure Kafka brokers, topics, schema registry, and Kafka Connect for internal projects.
+\item Supported Agile/Scrum delivery through JIRA, change management, troubleshooting, and DevOps guidance.
+\end{itemize}
+\resumeRole{DevOps Engineer / Software Engineer}{November 2016 -- March 2021}{Tech Mahindra}{Hyderabad, India}
+\begin{itemize}
+\item Designed Jenkins CI/CD pipelines with Git, Maven, Selenium, and JUnit, reducing software release cycle times by 50\%.
+\item Deployed A\kern0pt WS infrastructure across EC2, VPC, S3, IAM, Route 53, and Lambda; automated provisioning and Auto Scaling with Terraform and CloudFormation.
+\item Created reusable Jenkins shared libraries and Slack/Microsoft Teams build alerts.
+\item Built and orchestrated containerized services with Docker, Kubernetes, Docker Swarm, and Compose; automated deployments with Ansible.
+\item Configured Classic and Application Load Balancers with SSL/TLS certificates for highly available environments.
+\item Managed server provisioning and configuration with Ansible and Chef.
+\item Managed Git/GitLab workflows, branching strategies, merges, and developer support.
+\item Administered JFrog Artifactory and Sonatype Nexus repositories.
+\item Implemented Istio service mesh for traffic management, canary rollouts, and secure service communication.
+\item Wrote PowerShell and Linux shell automation for server housekeeping, backups, and health checks.
+\item Coordinated releases and troubleshooting with development, QA, and operations teams.
+\item Tracked bugs and sprints in JIRA, documented processes, and provided on-call support.
+\end{itemize}
+
+\newpage
+\cvSection{T\kern0pt echnical Skills}
+\begin{itemize}[label={},leftmargin=0pt,itemsep=1pt]
+\item \textbf{Software Development:} React, Next.js, TypeScript, JavaScript, Node.js, HTML, CSS, SQL, Python
+\item \textbf{Data and Integrations:} Firebase Authentication, Firestore, Firebase Storage, Cloud Functions, Razorpay, account flows, user-scoped data, search, cart and stock rules, reminders
+\item \textbf{Desktop and Mobile:} Electron, Tauri, Rust, Kotlin, Jetpack Compose, Android, Capacitor
+\item \textbf{Media and Documents:} FFmpeg, HTML Canvas, Media3, PDF generation, LaTeX
+\item \textbf{Cloud Platforms:} A\kern0pt WS (EKS, EC2, VPC, RDS, Lambda, NLB/ALB, CloudFront, S3, IAM/IRSA, Route 53, Secrets Manager, SSM), GCP, Azure
+\item \textbf{Containers and Platform Engineering:} Kubernetes, Docker, Helm, ArgoCD, Argo Rollouts, Istio, ECR, Docker Compose
+\item \textbf{Infrastructure as Code:} Terraform, A\kern0pt WS CDK (TypeScript), Ansible, Ansible Tower, A\kern0pt WS CloudFormation
+\item \textbf{CI/CD and Automation:} Jenkins, GitHub Actions, Concourse CI, GoCD, VSTS, Git, JFrog Artifactory, Nexus, Bash, PowerShell
+\item \textbf{Observability and Security:} Prometheus, Grafana, Alertmanager, Splunk, Zabbix, CloudWatch, PagerDuty, Sonatype, Veracode, Cloudflare W\kern0pt AF, External Secrets Operator
+\end{itemize}
+
+\cvSection{Selected Software and Platform Projects}
+\resumeProject{AI Job Search Studio}{TypeScript, Bun, Swift / WebKit, LaTeX}{Desktop workspace that imports PDF, text, and LaTeX resumes; applies evidence-based job matching with separate eligibility, language, and location checks; and compiles application PDFs locally.}
+\resumeProject{Shift Rota T\kern0pt racker}{Next.js, TypeScript, Firebase, Capacitor}{Live shift planner with account and password recovery, per-user Firestore data, weekly, monthly, and list views, shift and leave entries, and reminders; mobile build targets are configured.}
+\resumeProject{Passport Photo Maker}{React, Canvas, Capacitor, Electron}{Browser photo and print studio with passport and visa presets, custom sizing, high-resolution cropping, print sheets, collages, frames, resume layouts, and calendar tools; mobile and desktop build paths are configured.}
+\resumeProject{RoomRenter}{React, TypeScript, Firebase, Firestore, Cloud Functions}{Room listing and rental management app with public property listings and authenticated administration for properties, tenants, and previous-tenancy records.}
+\resumeProject{SKRALLS Praxis Platform}{HTML, CSS, JavaScript, Firebase, Razorpay}{Learning platform with course discovery, enrolment, course access, live cohorts, certificates, learner accounts, and administration; payment integration provisions learner access.}
+\resumeProject{Bandhan Box}{Next.js, React, TypeScript, Firebase}{Local storefront with product search, f{}ilters, sorting, product pages, and cart checks for quantity, stock, minimum orders, and subtotal; orders connect through WhatsApp.}
+\resumeProject{Thati{}flix Converter}{Electron, Node.js, FFmpeg, Shell}{Cross-platform desktop utility that bundles FFmpeg for local video remuxing, uses stream-copying to avoid re-encoding, and reports processing progress.}
+\resumeProject{Thati{}flix Mobile}{Kotlin, Jetpack Compose, Media3, Firebase}{Native Android media app for phones and tablets with categorized libraries, playback, account and cloud-source integrations, cached library state, and watch-progress handling.}
+\resumeProject{Backup Harbor}{Tauri, Rust, TypeScript, age encryption}{Desktop utility that scans selected Git repositories for ignored secrets and project instructions, creates passphrase- or recovery-key-protected archives, and verifies file hashes on restore.}
+\resumeProject{EKS Platform Blueprint}{Terraform, ArgoCD, Helm, A\kern0pt WS IRSA}{Reusable multi-environment Kubernetes foundation with drift detection, health checks, Amazon Linux 2023 worker templates, least-privilege workload identity, and automated secret synchronization.}
+\resumeProject{Portfolio W\kern0pt ebsite}{React, Framer Motion, Firebase Hosting}{Responsive single-page portfolio with data-driven career and project sections, animated navigation, reduced-motion support, and Firebase Hosting / GitHub Pages deployments.}
+
+\cvSection{Education}
+\textbf{Master of Science in Computer Science} $|$ Teesside University, Middlesbrough, UK $|$ January 2021 -- January 2023\\
+\textbf{Bachelor of T\kern0pt echnology} $|$ Jawaharlal Nehru Technological University, Hyderabad, India $|$ 2012 -- 2016
+\end{document}

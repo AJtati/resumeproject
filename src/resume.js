@@ -1,4 +1,4 @@
-export const summary = 'DevOps and Platform Engineer with 8+ years of experience supporting, automating, and optimizing production deployments on AWS, Kubernetes, and hybrid cloud platforms. Experienced in CI/CD, Terraform, AWS CDK, Ansible, EKS operations, secure secrets management, and platform tooling migrations. Also builds cross-platform desktop media tools and full-stack cloud applications.';
+export const summary = 'Software and Platform Engineer with 8+ years of professional experience delivering cloud platforms, deployment automation, and production services across AWS and Kubernetes. I also design, build, and ship independent web, desktop, and Android applications, using React, Next.js, TypeScript, Firebase, Electron, Tauri, Rust, Kotlin, and Jetpack Compose. My work spans product features and user workflows through infrastructure, integrations, and release delivery.';
 
 export const experience = {
   title: 'Work Experience',
@@ -62,11 +62,59 @@ export const experience = {
 };
 
 export const skillGroups = [
-  ['Cloud infrastructure', 'AWS (EKS, EC2, VPC, RDS, Lambda, NLB/ALB, CloudFront, S3, IAM/IRSA, Route 53, Secrets Manager, SSM) · GCP · Azure'],
-  ['Containers & orchestration', 'Kubernetes · Docker · Helm · ArgoCD · Argo Rollouts · Istio · ECR · Docker Compose'],
-  ['Infrastructure as code', 'Terraform · AWS CDK (TypeScript) · Ansible · Ansible Tower · AWS CloudFormation'],
-  ['CI/CD & automation', 'Jenkins · GitHub Actions · Concourse CI · GoCD · Git · VSTS · JFrog Artifactory · Nexus'],
-  ['Observability & security', 'Prometheus · Grafana · Alertmanager · Splunk · Zabbix · CloudWatch · PagerDuty · Sonatype · Veracode · SonarQube · AWS WAF · Cloudflare WAF · External Secrets Operator'],
-  ['Scripting & development', 'Python · Bash/Shell · PowerShell · TypeScript · Node.js · Next.js · React · SQL · FFmpeg'],
-  ['Systems & delivery', 'Red Hat Linux · Windows · Git · GitHub · GitLab · Jira · Agile · Scrum · SDLC']
+  {
+    name: 'Web application development',
+    skills: 'React · Next.js · TypeScript · JavaScript · HTML · CSS',
+    applied: 'Used for this portfolio, Bandhan Box, Shift Rota Tracker, Passport Photo Maker, and other browser-based products.'
+  },
+  {
+    name: 'Application data & services',
+    skills: 'Firebase Authentication · Firestore · Firebase Storage · Cloud Functions · Node.js · SQL',
+    applied: 'Supports account and per-user data flows in Shift Rota Tracker, RoomRenter, and the SKRALLS learner platform.'
+  },
+  {
+    name: 'Desktop & native applications',
+    skills: 'Electron · Tauri · Rust · Kotlin · Jetpack Compose · Android · Capacitor',
+    applied: 'Built desktop media and backup utilities, a native Android media app, and mobile build paths for web products.'
+  },
+  {
+    name: 'Media, graphics & documents',
+    skills: 'FFmpeg · HTML Canvas · Media3 · PDF workflows · LaTeX',
+    applied: 'Used for local video remuxing, image crop and print layouts, Android playback, and locally compiled job application documents.'
+  },
+  {
+    name: 'Product features & integrations',
+    skills: 'Authentication flows · User-scoped data · Search and filters · Cart rules · Payments · Reminders',
+    applied: 'Examples include Firebase account flows, Razorpay course access, storefront cart checks, and shift reminders.'
+  },
+  {
+    name: 'Cloud infrastructure',
+    skills: 'AWS (EKS, EC2, VPC, RDS, Lambda, NLB/ALB, CloudFront, S3, IAM/IRSA, Route 53, Secrets Manager, SSM) · GCP · Azure',
+    applied: 'Professional platform and operations experience, including production AWS environments and secure workload access.'
+  },
+  {
+    name: 'Containers & platform delivery',
+    skills: 'Kubernetes · Docker · Helm · ArgoCD · Argo Rollouts · Istio · ECR · Docker Compose',
+    applied: 'Used in production platform work and in the multi-environment EKS platform blueprint.'
+  },
+  {
+    name: 'Infrastructure as code',
+    skills: 'Terraform · AWS CDK (TypeScript) · Ansible · Ansible Tower · AWS CloudFormation',
+    applied: 'Applied to repeatable cloud infrastructure, environment configuration, and automated platform changes.'
+  },
+  {
+    name: 'Build, release & automation',
+    skills: 'Jenkins · GitHub Actions · Concourse CI · GoCD · Git · VSTS · JFrog Artifactory · Nexus · Python · Bash · PowerShell',
+    applied: 'Professional experience building CI/CD pipelines, automation, developer tooling, and release workflows.'
+  },
+  {
+    name: 'Observability & security',
+    skills: 'Prometheus · Grafana · Alertmanager · Splunk · Zabbix · CloudWatch · PagerDuty · Sonatype · Veracode · Cloudflare WAF · External Secrets Operator',
+    applied: 'Production monitoring, incident response, dependency and code scanning, and secure configuration.'
+  },
+  {
+    name: 'Engineering workflow',
+    skills: 'Git · GitHub · GitLab · Jira · Agile · Scrum · SDLC · Red Hat Linux · Windows',
+    applied: 'Version control and delivery practices across professional platform work and independently built applications.'
+  }
 ];
